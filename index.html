@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Command Center - Calendar</title>
+    <!-- Tailwind CSS for UI Layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FullCalendar.js Core and Plugins (Month/Week Views) -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    
+    <style>
+        /* Glassmorphic styling to allow background videos to blur through */
+        .glass-panel {
+            background: rgba(15, 18, 25, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Custom scrollbar to keep the sci-fi minimalist aesthetic */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(147, 51, 234, 0.4);
+            border-radius: 2px;
+        }
+
+        /* FullCalendar Custom Overrides to match image_39cc06.jpg dark theme */
+        .fc {
+            --fc-border-color: rgba(255, 255, 255, 0.08);
+            --fc-page-bg-color: transparent;
+            color: #e2e8f0;
+            font-size: 0.8rem;
+        }
+        .fc .fc-toolbar-title {
+            font-size: 1.1rem !important;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        .fc .fc-button-primary {
+            background-color: rgba(147, 51, 234, 0.2) !important;
+            border: 1px solid rgba(147, 51, 234, 0.5) !important;
+            font-size: 0.75rem !important;
+            text-transform: uppercase;
+        }
+        .fc .fc-button-primary:hover {
+            background-color: rgba(147, 51, 234, 0.5) !important;
+        }
+        .fc .fc-button-active {
+            background-color: rgb(147, 51, 234) !important;
+        }
+        .fc-theme-standard td, .fc-theme-standard th {
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans relative overflow-hidden">
+
+    <!-- 1. YOUTUBE BACKGROUND VIDEO PLAYER -->
+    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <!-- Replace YOUR_VIDEO_ID with your favorite atmospheric YouTube loop ID (e.g., Cyberpunk city, ambient rain) -->
+        <iframe class="w-screen h-screen scale-125" 
+                src="https://www.youtube.com/embed/5Wq1D6v6Iu4?autoplay=1&mute=1&loop=1&playlist=5Wq1D6v6Iu4&controls=0&showinfo=0&rel=0&modestbranding=1" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+        </iframe>
+        <!-- Dark overlay tint to maintain UI text contrast -->
+        <div class="absolute inset-0 bg-slate-950/50 mix-blend-multiply"></div>
+    </div>
+
+    <!-- MAIN INTERFACE CONTAINER -->
+    <main class="relative z-10 p-4 h-screen grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- ================= CALENDAR COLUMN (LEFT) ================= -->
+        <section class="h-full flex flex-col gap-3 max-w-md w-full">
+            
+            <!-- MODULE 1: TASKS / DAILY SCHEDULE -->
+            <div class="glass-panel rounded-xl p-4 flex-1 flex flex-col min-h-[220px]">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-sm font-semibold tracking-wider text-purple-400 uppercase">Daily Schedule & Tasks</h2>
+                    <span class="text-xs text-slate-400" id="current-date-display">June 2026</span>
+                </div>
+                <!-- Task List Items -->
+                <div class="space-y-2 overflow-y-auto pr-1 flex-1 text-xs">
+                    <label class="flex items-center space-x-3 bg-white/5 p-2 rounded border border-white/5 cursor-pointer hover:bg-white/10 transition">
+                        <input type="checkbox" class="accent-purple-500 rounded bg-slate-800 border-white/10" checked>
+                        <span class="line-through text-slate-400">Check fitness tracker stats</span>
+                    </label>
+                    <label class="flex items-center space-x-3 bg-white/5 p-2 rounded border border-white/5 cursor-pointer hover:bg-white/10 transition">
+                        <input type="checkbox" class="accent-purple-500 rounded bg-slate-800 border-white/10">
+                        <span class="text-slate-200">Review 3DEXPERIENCE configuration data</span>
+                    </label>
+                    <label class="flex items-center space-x-3 bg-white/5 p-2 rounded border border-white/5 cursor-pointer hover:bg-white/10 transition">
+                        <input type="checkbox" class="accent-purple-500 rounded bg-slate-800 border-white/10">
+                        <span class="text-slate-200">Update project roadmap milestones</span>
+                    </label>
+                    <label class="flex items-center space-x-3 bg-white/5 p-2 rounded border border-white/5 cursor-pointer hover:bg-white/10 transition">
+                        <input type="checkbox" class="accent-purple-500 rounded bg-slate-800 border-white/10">
+                        <span class="text-slate-200">Sync dashboard inputs and cloud database</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- MODULE 2: WEEKLY / MONTHLY MAIN CALENDAR -->
+            <div class="glass-panel rounded-xl p-4 flex-[2] flex flex-col min-h-[380px]">
+                <!-- FullCalendar dynamically mounts here -->
+                <div id="calendar" class="w-full h-full flex-1"></div>
+            </div>
+
+            <!-- MODULE 3: LINEAR YEARLY CALENDAR (As structured in image_39cc06.jpg) -->
+            <div class="glass-panel rounded-xl p-3 flex-1 flex flex-col min-h-[180px]">
+                <h2 class="text-xs font-semibold tracking-wider text-fuchsia-400 uppercase mb-2">Linear Yearly Timeline (2026)</h2>
+                
+                <!-- Timeline Grid Matrix -->
+                <div class="grid grid-cols-12 gap-1 flex-1 text-[10px] select-none font-mono">
+                    <!-- JavaScript dynamically populates the 12 months with structural grid layouts -->
+                    <div id="yearly-timeline-container" class="col-span-12 flex flex-col justify-between h-full space-y-1">
+                        <!-- Dynamic Month Tracks Will Render Here -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- CENTER & RIGHT COLUMNS CONTAINER (PLACEHOLDERS FOR FUTURE INFRASTRUCTURE) -->
+        <section class="col-span-2 hidden md:flex flex-col justify-between h-full p-4 border border-dashed border-white/5 rounded-xl pointer-events-none">
+            <div class="text-slate-500 italic text-sm">Center & Right Modules Placeholder (Weather, Health, Finance, Maps)</div>
+            
+            <!-- FUTURE AI COMMAND WINDOW PLACEHOLDER -->
+            <div class="w-full max-w-xl mx-auto bg-slate-900/40 border border-white/10 p-3 rounded-xl flex items-center justify-between text-slate-400 text-xs backdrop-blur-sm">
+                <span>Ask Gemini...</span>
+                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= APPLICATION LOGIC ENGINE ================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. INITIALIZE MONTHLY/WEEKLY INTERACTIVE CALENDAR
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // Default View
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek' // Toggles between Month Grid and Weekly Time Blocks
+                },
+                editable: true,
+                selectable: true,
+                initialDate: '2026-06-01', // Anchored to screenshot timeline context
+                events: [
+                    { title: 'Arbeitsphase', start: '2026-06-01', end: '2026-06-03', color: '#0284c7' },
+                    { title: 'Stay at Moxy Paris', start: '2026-06-03', end: '2026-06-08', color: '#db2777' },
+                    { title: 'Stay at Courtyard', start: '2026-06-25', end: '2026-06-29', color: '#bc529c' },
+                    { title: 'Project Deadline', start: '2026-06-29', color: '#ea580c' }
+                ]
+            });
+            calendar.render();
+
+            // 2. GENERATE THE LINEAR YEARLY TIMELINE COMPONENT
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const timelineContainer = document.getElementById('yearly-timeline-container');
+
+            // Sample mock global system events mapped structurally down the axis line
+            const yearlyMilestones = {
+                2: [{ name: 'Kenya/Tanzania Trip', style: 'bg-emerald-600/60 border-emerald-400' }], // March
+                5: [{ name: '3DEXPERIENCE Wk', style: 'bg-indigo-600/60 border-indigo-400' }, { name: 'Paris Trip', style: 'bg-pink-600/50 border-pink-400' }], // June
+                7: [{ name: 'Thailand & Nepal Journey', style: 'bg-amber-600/60 border-amber-400' }], // August
+                8: [{ name: 'China Tour', style: 'bg-red-600/60 border-red-400' }] // September
+            };
+
+            months.forEach((month, index) => {
+                const row = document.createElement('div');
+                row.className = "flex items-center w-full bg-white/[0.02] border border-white/[0.03] rounded p-1 min-h-[14px]";
+                
+                // Label
+                const label = document.createElement('div');
+                label.className = "w-8 text-slate-400 font-bold tracking-tighter border-r border-white/10 mr-2";
+                label.innerText = month;
+                row.appendChild(label);
+
+                // Blocks Container 
+                const track = document.createElement('div');
+                track.className = "flex-1 relative h-full flex gap-1 items-center";
+
+                if(yearlyMilestones[index]) {
+                    yearlyMilestones[index].forEach(event => {
+                        const block = document.createElement('div');
+                        block.className = `px-2 py-0.5 rounded text-[9px] border font-sans truncate cursor-pointer transition transform hover:scale-[1.02] ${event.style}`;
+                        block.innerText = event.name;
+                        track.appendChild(block);
+                    });
+                } else {
+                    // Render dark matrix tracking tick indicators for empty months
+                    track.innerHTML = `<div class="w-full flex justify-between opacity-10 text-[6px]">••••••••••••••••••••••••••••••••</div>`;
+                }
+
+                row.appendChild(track);
+                timelineContainer.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
