@@ -4,75 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Command Center</title>
+    <!-- Tailwind CSS for UI Layout -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FullCalendar.js Core and Plugins (Month/Week Views) -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     
     <style>
-        /* Glassmorphic styling */
+        /* Glassmorphic panels */
         .glass-panel {
-            background: rgba(10, 12, 18, 0.75);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(10, 12, 18, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        /* Custom ultra-thin scrollbars */
+        /* Thin minimalist scrollbars */
         ::-webkit-scrollbar {
-            width: 3px;
-            height: 3px;
+            width: 2px;
+            height: 2px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(147, 51, 234, 0.3);
-            border-radius: 2px;
+            background: rgba(147, 51, 234, 0.25);
+            border-radius: 1px;
         }
 
-        /* FullCalendar Custom Dark Theme Compression */
+        /* Ultra-Dense FullCalendar Overrides to fit layout specs */
         .fc {
-            --fc-border-color: rgba(255, 255, 255, 0.05);
+            --fc-border-color: rgba(255, 255, 255, 0.04);
             --fc-page-bg-color: transparent;
-            color: #cbd5e1;
-            font-size: 0.7rem;
+            color: #94a3b8;
+            font-size: 0.65rem;
         }
         .fc .fc-toolbar {
-            margin-bottom: 0.2rem !important;
+            margin-bottom: 0.15rem !important;
             padding: 0px !important;
         }
         .fc .fc-toolbar-title {
-            font-size: 0.85rem !important;
-            font-weight: 600;
+            font-size: 0.75rem !important;
+            font-weight: 700;
+            color: #f1f5f9;
         }
         .fc .fc-button-primary {
-            background-color: rgba(147, 51, 234, 0.15) !important;
-            border: 1px solid rgba(147, 51, 234, 0.4) !important;
-            padding: 1px 4px !important;
-            font-size: 0.65rem !important;
+            background-color: rgba(147, 51, 234, 0.12) !important;
+            border: 1px solid rgba(147, 51, 234, 0.3) !important;
+            padding: 1px 3px !important;
+            font-size: 0.6rem !important;
         }
         .fc-theme-standard td, .fc-theme-standard th {
-            border: 1px solid rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.03) !important;
         }
         .fc-daygrid-event {
-            font-size: 0.62rem !important;
-            padding: 0px 1px !important;
+            font-size: 0.58rem !important;
+            padding: 0px !important;
+            margin: 0.5px 0 !important;
+        }
+        .fc .fc-scroller-harness {
+            overflow: hidden !important;
         }
 
-        /* Linear Matrix Sizing (To match image_394448.png precisely) */
+        /* Linear Matrix Compact Micro-Grid Utilities */
         .matrix-cell {
             aspect-ratio: 1 / 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 6px;
             font-family: monospace;
-            border-right: 1px solid rgba(255,255,255,0.03);
-            position: relative;
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
+            line-height: 1;
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-200 min-h-screen w-screen font-sans relative overflow-hidden select-none">
 
+    <!-- BACKDROP YOUTUBE LOOPER -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <iframe class="w-screen h-screen scale-125 origin-center" 
                 src="https://www.youtube.com/embed/HuZ6wat9HHg?autoplay=1&mute=1&loop=1&playlist=HuZ6wat9HHg&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3" 
@@ -80,132 +88,146 @@
                 allow="autoplay; encrypted-media" 
                 allowfullscreen>
         </iframe>
-        <div class="absolute inset-0 bg-slate-950/65 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-slate-950/60 mix-blend-multiply"></div>
     </div>
 
-    <div class="relative z-10 w-full h-screen p-3 flex flex-col justify-between gap-3">
+    <!-- GLOBAL WRAPPER INTERFACE -->
+    <main class="relative z-10 w-full h-screen p-2 flex flex-row gap-2 overflow-hidden">
         
-        <header class="w-full flex justify-center items-start">
-            <div class="glass-panel rounded-xl p-2.5 flex items-center space-x-6 max-w-3xl w-full justify-between">
-                <div class="flex items-center space-x-3 pl-2">
-                    <div class="text-left">
-                        <div class="text-[11px] text-slate-400 font-medium tracking-tight">Munich, DE</div>
-                        <div class="text-2xl font-bold tracking-tighter text-white leading-none">20°C</div>
-                        <div class="text-[9px] text-slate-400">Mostly Cloudy</div>
+        <!-- ================= LEFT SIDEBAR PIPELINE (EXACT CLONE OF IMAGE_39CC06.JPG) ================= -->
+        <section class="w-[340px] flex-none h-full flex flex-col gap-2 overflow-hidden">
+            
+            <!-- MODULE 1: INTERACTIVE AGENDA & TASKS (18% Height Allocation) -->
+            <div class="glass-panel rounded-xl p-2 flex flex-col h-[18%] overflow-hidden">
+                <div class="flex justify-between items-center mb-1 flex-none">
+                    <h2 class="text-[9px] font-bold tracking-wider text-purple-400 uppercase">Agenda & Tasks</h2>
+                    <span class="text-[8px] text-slate-500 font-mono">02.06.2026</span>
+                </div>
+                <div class="space-y-0.5 overflow-y-auto pr-0.5 flex-1 text-[10px]">
+                    <label class="flex items-center space-x-2 bg-white/[0.01] px-1.5 py-0.5 rounded border border-white/5 cursor-pointer">
+                        <input type="checkbox" class="accent-purple-500 scale-75 rounded bg-slate-800 border-white/10" checked>
+                        <span class="line-through text-slate-500 truncate">Check fitness tracker stats</span>
+                    </label>
+                    <label class="flex items-center space-x-2 bg-white/[0.01] px-1.5 py-0.5 rounded border border-white/5 cursor-pointer">
+                        <input type="checkbox" class="accent-purple-500 scale-75 rounded bg-slate-800 border-white/10">
+                        <span class="text-slate-300 truncate">Review 3DEXPERIENCE data layers</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- MODULE 2: INTERACTIVE MAIN CALENDAR GRID (52% Height Allocation) -->
+            <div class="glass-panel rounded-xl p-2 flex flex-col h-[52%] overflow-hidden">
+                <div id="calendar" class="w-full h-full flex-1"></div>
+            </div>
+
+            <!-- MODULE 3: COMPRESSED LINEAR YEAR MATRIX (30% Height Allocation) -->
+            <div class="glass-panel rounded-xl p-2 flex flex-col h-[30%] overflow-hidden">
+                <div class="flex justify-between items-center mb-0.5 flex-none">
+                    <h2 class="text-[9px] font-bold tracking-wider text-fuchsia-400 uppercase">Linear Matrix Calendar</h2>
+                    <span class="text-[7px] font-mono text-slate-500">Year Overview</span>
+                </div>
+                
+                <!-- Inner scroll view containing matrix tracks natively -->
+                <div class="flex-1 overflow-x-auto overflow-y-hidden bg-black/20 rounded p-0.5 border border-white/5">
+                    <div class="min-w-[420px] flex flex-col h-full justify-between" id="linear-matrix-canvas">
+                        <!-- Handled inside Javascript initialization layer -->
                     </div>
-                    <div class="text-[9px] text-slate-500 border-l border-white/10 pl-2 space-y-0.5">
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= CENTER-RIGHT WORKSPACE AREA ================= -->
+        <section class="flex-1 h-full flex flex-col justify-between items-center p-2 overflow-hidden">
+            
+            <!-- TOP MOUNTED WEATHER FORECAST GRID -->
+            <div class="glass-panel rounded-xl p-2 flex items-center space-x-4 max-w-2xl w-full justify-between flex-none">
+                <!-- Live Context Status -->
+                <div class="flex items-center space-x-2 pl-1">
+                    <div class="text-left">
+                        <div class="text-[9px] text-slate-400 font-medium">Munich, DE</div>
+                        <div class="text-xl font-bold tracking-tighter text-white leading-none">20°C</div>
+                    </div>
+                    <div class="text-[8px] text-slate-500 border-l border-white/10 pl-2">
                         <div>Hum: 65%</div>
                         <div>Wind: 12km/h</div>
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-2 flex-1 justify-end pr-2 font-mono">
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Tue</div>
-                        <div class="text-[11px] my-0.5 text-blue-400">🌧️</div>
-                        <div class="text-[8px] text-slate-300">23°<span class="text-slate-500">13°</span></div>
+                <!-- 7-Day Matrix Row -->
+                <div class="flex items-center space-x-1 flex-1 justify-end font-mono">
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Tue</div>
+                        <div class="my-0.5">🌧️</div>
+                        <div class="text-slate-300">23°<span class="text-slate-500">13</span></div>
                     </div>
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Wed</div>
-                        <div class="text-[11px] my-0.5 text-blue-400">🌧️</div>
-                        <div class="text-[8px] text-slate-300">24°<span class="text-slate-500">13°</span></div>
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Wed</div>
+                        <div class="my-0.5">🌧️</div>
+                        <div class="text-slate-300">24°<span class="text-slate-500">13</span></div>
                     </div>
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Thu</div>
-                        <div class="text-[11px] my-0.5 text-slate-400">☁️</div>
-                        <div class="text-[8px] text-slate-300">19°<span class="text-slate-500">13°</span></div>
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Thu</div>
+                        <div class="my-0.5">☁️</div>
+                        <div class="text-slate-300">19°<span class="text-slate-500">13</span></div>
                     </div>
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Fri</div>
-                        <div class="text-[11px] my-0.5 text-blue-400">🌧️</div>
-                        <div class="text-[8px] text-slate-300">23°<span class="text-slate-500">12°</span></div>
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Fri</div>
+                        <div class="my-0.5">🌧️</div>
+                        <div class="text-slate-300">23°<span class="text-slate-500">12</span></div>
                     </div>
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Sat</div>
-                        <div class="text-[11px] my-0.5 text-amber-400">⛅</div>
-                        <div class="text-[8px] text-slate-300">20°<span class="text-slate-500">11°</span></div>
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Sat</div>
+                        <div class="my-0.5">⛅</div>
+                        <div class="text-slate-300">20°<span class="text-slate-500">11</span></div>
                     </div>
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Sun</div>
-                        <div class="text-[11px] my-0.5 text-amber-400">⛅</div>
-                        <div class="text-[8px] text-slate-300">22°<span class="text-slate-500">14°</span></div>
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Sun</div>
+                        <div class="my-0.5">⛅</div>
+                        <div class="text-slate-300">22°<span class="text-slate-500">14</span></div>
                     </div>
-                    <div class="text-center px-1.5 py-1 bg-white/[0.02] border border-white/5 rounded min-w-[48px]">
-                        <div class="text-[8px] text-slate-400 font-bold">Mon</div>
-                        <div class="text-[11px] my-0.5 text-blue-400">🌧️</div>
-                        <div class="text-[8px] text-slate-300">24°<span class="text-slate-500">11°</span></div>
+                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
+                        <div class="text-slate-400 font-bold">Mon</div>
+                        <div class="my-0.5">🌧️</div>
+                        <div class="text-slate-300">24°<span class="text-slate-500">11</span></div>
                     </div>
                 </div>
             </div>
-        </header>
 
-        <div class="flex-1 w-full grid grid-cols-1 lg:grid-cols-4 gap-3 items-stretch overflow-hidden">
-            
-            <div class="lg:col-span-1 flex flex-col gap-2.5 h-full overflow-hidden max-w-sm w-full">
-                <div class="glass-panel rounded-xl p-2.5 flex-none h-[25%] flex flex-col overflow-hidden">
-                    <h2 class="text-[10px] font-bold tracking-wider text-purple-400 uppercase mb-1.5">Agenda & Tasks</h2>
-                    <div class="space-y-1 overflow-y-auto pr-1 flex-1 text-[11px]">
-                        <label class="flex items-center space-x-2 bg-white/[0.02] p-1 rounded border border-white/5 cursor-pointer">
-                            <input type="checkbox" class="accent-purple-500 rounded bg-slate-800 border-white/10" checked>
-                            <span class="line-through text-slate-500 truncate">Check fitness tracker stats</span>
-                        </label>
-                        <label class="flex items-center space-x-2 bg-white/[0.02] p-1 rounded border border-white/5 cursor-pointer">
-                            <input type="checkbox" class="accent-purple-500 rounded bg-slate-800 border-white/10">
-                            <span class="text-slate-300 truncate">Review 3DEXPERIENCE data config</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="glass-panel rounded-xl p-2.5 flex-1 h-[75%] flex flex-col overflow-hidden">
-                    <div id="calendar" class="w-full h-full flex-1"></div>
-                </div>
+            <!-- DUMMY INFRASTRUCTURE SPACE FILLER (Leaves room for maps, finance metrics later) -->
+            <div class="flex-1 w-full flex items-center justify-center opacity-20 pointer-events-none italic text-xs">
+                Main Screen Overlay Space
             </div>
 
-            <div class="lg:col-span-3 flex items-center justify-center relative p-6">
+            <!-- BOTTOM RUNNING AI INTERACTION FIELD -->
+            <div class="w-full max-w-lg glass-panel p-1 rounded-xl border border-white/10 flex items-center space-x-2 flex-none mb-1 shadow-2xl">
+                <!-- Dropdown Engine Matrix -->
+                <select id="model-selector" class="bg-purple-950/40 border border-purple-500/20 rounded-lg px-2 py-1 text-[10px] text-purple-300 focus:outline-none cursor-pointer">
+                    <option value="gemini-pro" selected>✨ Gemini 1.5 Pro</option>
+                    <option value="gemini-flash">⚡ Gemini 1.5 Flash</option>
+                    <option value="claude-sonnet">🤖 Claude 3.5 Sonnet</option>
+                </select>
                 
-                <div class="w-full max-w-xl glass-panel p-1.5 rounded-2xl shadow-2xl border border-white/10 flex items-center space-x-2">
-                    <select id="model-selector" class="bg-purple-950/50 border border-purple-500/30 rounded-xl px-2.5 py-2 text-[11px] text-purple-300 font-medium focus:outline-none cursor-pointer hover:bg-purple-900/40 transition">
-                        <option value="gemini-pro" selected>✨ Gemini 1.5 Pro</option>
-                        <option value="gemini-flash">⚡ Gemini 1.5 Flash</option>
-                        <option value="claude-sonnet">🤖 Claude 3.5 Sonnet</option>
-                        <option value="gpt-4o">🧠 GPT-4o Engine</option>
-                    </select>
-                    
-                    <input type="text" 
-                           placeholder="Ask Command Center..." 
-                           class="bg-transparent flex-1 text-xs text-slate-100 placeholder-slate-500 px-2 focus:outline-none" />
-                    
-                    <button class="p-2 text-purple-400 hover:text-purple-300 transition pr-3">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
-                        </svg>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-        <footer class="w-full glass-panel rounded-xl p-2.5 h-[28%] flex flex-col overflow-hidden">
-            <div class="flex justify-between items-center mb-1 flex-none">
-                <h2 class="text-[10px] font-bold tracking-wider text-fuchsia-400 uppercase">Linear Matrix Calendar (Year View)</h2>
-                <div class="flex items-center space-x-3 text-[9px] text-slate-400 font-mono">
-                    <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-sm bg-pink-500 mr-1"></span> Travel</span>
-                    <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-sm bg-sky-500 mr-1"></span> Work</span>
-                </div>
+                <input type="text" 
+                       placeholder="Ask Gemini..." 
+                       class="bg-transparent flex-1 text-[11px] text-slate-100 placeholder-slate-500 focus:outline-none px-1" />
+                
+                <button class="p-1.5 text-purple-400 hover:text-purple-300 pr-2">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                    </svg>
+                </button>
             </div>
 
-            <div class="flex-1 overflow-auto bg-black/10 rounded border border-white/5 p-1">
-                <div class="min-w-[1000px] flex flex-col h-full justify-between" id="linear-matrix-canvas">
-                    </div>
-            </div>
-        </footer>
+        </section>
 
-    </div>
+    </main>
 
+    <!-- ================= CONTROLLER INTERPOLATION SCRIPT ================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. MAIN CALENDAR SETUP
+            // 1. GENERATE SIDEBAR FULLCALENDAR INTERFACE
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -224,77 +246,68 @@
             });
             calendar.render();
 
-            // 2. LINEAR YEAR MATRIX ARCHITECTURE (2026 Axis Sync)
+            // 2. BUILD MICRO LINEAR CALENDAR TRACK MATRIX (Synchronized horizontally)
             const matrixCanvas = document.getElementById('linear-matrix-canvas');
-            const weekdaysShort = ['S', 'S', 'M', 'D', 'M', 'D', 'F', 'S', 'S', 'M', 'D', 'M', 'D', 'F', 'S', 'S', 'M', 'D', 'M', 'D', 'F', 'S', 'S', 'M', 'D', 'M', 'D', 'F', 'S', 'S', 'M', 'D', 'M', 'D', 'F', 'S', 'S'];
+            const weekdaysShort = ['S', 'S', 'M', 'D', 'M', 'D', 'F'];
             const monthsData = [
-                { name: 'Jan', days: 31, offset: 4 },
-                { name: 'Feb', days: 28, offset: 0 },
-                { name: 'Mar', days: 31, offset: 0 },
-                { name: 'Apr', days: 30, offset: 3 },
-                { name: 'May', days: 31, offset: 5 },
-                { name: 'Jun', days: 30, offset: 1 },
-                { name: 'Jul', days: 31, offset: 3 },
-                { name: 'Aug', days: 31, offset: 6 },
-                { name: 'Sep', days: 30, offset: 2 },
-                { name: 'Oct', days: 31, offset: 4 },
-                { name: 'Nov', days: 30, offset: 0 },
-                { name: 'Dec', days: 31, offset: 2 }
+                { name: 'Jan', days: 31, offset: 4 }, { name: 'Feb', days: 28, offset: 0 },
+                { name: 'Mar', days: 31, offset: 0 }, { name: 'Apr', days: 30, offset: 3 },
+                { name: 'May', days: 31, offset: 5 }, { name: 'Jun', days: 30, offset: 1 },
+                { name: 'Jul', days: 31, offset: 3 }, { name: 'Aug', days: 31, offset: 6 },
+                { name: 'Sep', days: 30, offset: 2 }, { name: 'Oct', days: 31, offset: 4 },
+                { name: 'Nov', days: 30, offset: 0 }, { name: 'Dec', days: 31, offset: 2 }
             ];
 
             // Build Matrix Day Columns Header Line
             const headerRow = document.createElement('div');
-            headerRow.className = "grid grid-cols-40 text-center font-mono text-[8px] text-slate-500 border-b border-white/10 pb-0.5 font-bold";
+            headerRow.className = "grid grid-cols-40 text-center font-mono text-[6px] text-slate-600 border-b border-white/5 pb-0.5 font-bold";
             const blankLabel = document.createElement('div');
-            blankLabel.className = "col-span-2 text-left pl-1 text-[9px]";
-            blankLabel.innerText = "2026";
+            blankLabel.className = "col-span-3 text-left pl-0.5 text-[7px] text-slate-500";
+            blankLabel.innerText = '2026';
             headerRow.appendChild(blankLabel);
 
-            for (let i = 0; i < 38; i++) {
+            for (let i = 0; i < 37; i++) {
                 const dayLetter = document.createElement('div');
                 dayLetter.innerText = weekdaysShort[i % 7];
                 headerRow.appendChild(dayLetter);
             }
             matrixCanvas.appendChild(headerRow);
 
-            // Mapped Travel Intercept Tracks
+            // Travel Segment Interval Configurations
             const eventBands = {
-                "Feb": { start: 5, end: 7, label: "Stockholm", color: "bg-pink-600 text-white font-bold" },
-                "Mar": { start: 5, end: 15, label: "Africa", color: "bg-fuchsia-700 text-white font-bold" },
-                "Apr": { start: 3, end: 6, label: "Berlin", color: "bg-pink-600 text-white" },
-                "Jun": { start: 4, end: 8, label: "Paris", color: "bg-purple-600 text-white" },
-                "Aug": { start: 5, end: 9, label: "Amsterdam", color: "bg-pink-600 text-white" }
+                "Feb": { start: 5, end: 7, color: "bg-pink-600" },
+                "Mar": { start: 5, end: 15, color: "bg-fuchsia-700" },
+                "Apr": { start: 3, end: 6, color: "bg-pink-600" },
+                "Jun": { start: 4, end: 8, color: "bg-purple-600" },
+                "Aug": { start: 5, end: 9, color: "bg-pink-600" }
             };
 
-            // Loop out Rails
+            // Loop and render matrix rails inside layout
             monthsData.forEach((m) => {
                 const monthRow = document.createElement('div');
-                monthRow.className = "grid grid-cols-40 items-center text-center border-b border-white/[0.02] min-h-[16px] relative";
+                monthRow.className = "grid grid-cols-40 items-center text-center border-b border-white/[0.01] flex-1 min-h-[9px] relative";
 
                 const nameBlock = document.createElement('div');
-                nameBlock.className = "col-span-2 text-left pl-1 text-[9px] font-bold text-slate-400 tracking-tight";
+                nameBlock.className = "col-span-3 text-left pl-0.5 text-[7px] font-bold text-slate-400";
                 nameBlock.innerText = m.name;
                 monthRow.appendChild(nameBlock);
 
                 let activeDayCounter = 1;
-                for (let c = 0; c < 38; c++) {
+                for (let c = 0; c < 37; c++) {
                     const square = document.createElement('div');
-                    square.className = "matrix-cell text-[8px] text-slate-600 h-full border-l border-white/[0.01]";
+                    square.className = "matrix-cell text-slate-600 h-full border-l border-white/[0.01]";
 
                     if (c >= m.offset && activeDayCounter <= m.days) {
                         square.innerText = activeDayCounter;
                         square.classList.replace('text-slate-600', 'text-slate-400');
 
                         if (eventBands[m.name] && activeDayCounter >= eventBands[m.name].start && activeDayCounter <= eventBands[m.name].end) {
-                            square.className += ` ${eventBands[m.name].color}`;
-                            if(activeDayCounter === eventBands[m.name].start) {
-                                square.innerHTML = `<span class="absolute inset-0 flex items-center justify-start pl-1 font-sans text-[7px] tracking-tighter z-10 truncate font-medium">${eventBands[m.name].label}</span>`;
-                            }
+                            square.className += ` ${eventBands[m.name].color} text-white font-bold`;
                         }
                         activeDayCounter++;
                     } else {
                         square.innerHTML = "";
-                        square.className += " bg-black/30 opacity-10";
+                        square.className += " bg-black/40 opacity-5";
                     }
                     monthRow.appendChild(square);
                 }
