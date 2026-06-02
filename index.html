@@ -4,314 +4,214 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Command Center</title>
-    <!-- Tailwind CSS for UI Layout -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FullCalendar.js Core and Plugins (Month/Week Views) -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     
     <style>
-        /* Glassmorphic panels */
+        /* Force application to exact window size */
+        html, body {
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+        }
+
         .glass-panel {
-            background: rgba(10, 12, 18, 0.82);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(12, 14, 20, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.5rem;
         }
         
-        /* Thin minimalist scrollbars */
-        ::-webkit-scrollbar {
-            width: 2px;
-            height: 2px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(147, 51, 234, 0.25);
-            border-radius: 1px;
-        }
+        /* Ultra-thin scrollbars */
+        ::-webkit-scrollbar { width: 2px; height: 2px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(147, 51, 234, 0.4); }
 
-        /* Ultra-Dense FullCalendar Overrides to fit layout specs */
+        /* Compressed FullCalendar */
         .fc {
-            --fc-border-color: rgba(255, 255, 255, 0.04);
+            --fc-border-color: rgba(255, 255, 255, 0.06);
             --fc-page-bg-color: transparent;
             color: #94a3b8;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
+            height: 100% !important;
         }
-        .fc .fc-toolbar {
-            margin-bottom: 0.15rem !important;
-            padding: 0px !important;
-        }
-        .fc .fc-toolbar-title {
-            font-size: 0.75rem !important;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
+        .fc .fc-toolbar { margin-bottom: 0.2rem !important; padding: 0 !important; }
+        .fc .fc-toolbar-title { font-size: 0.7rem !important; font-weight: 700; color: #e2e8f0; }
         .fc .fc-button-primary {
-            background-color: rgba(147, 51, 234, 0.12) !important;
-            border: 1px solid rgba(147, 51, 234, 0.3) !important;
-            padding: 1px 3px !important;
-            font-size: 0.6rem !important;
+            background-color: rgba(147, 51, 234, 0.2) !important;
+            border: 1px solid rgba(147, 51, 234, 0.4) !important;
+            padding: 0.1rem 0.3rem !important;
+            font-size: 0.55rem !important;
         }
-        .fc-theme-standard td, .fc-theme-standard th {
-            border: 1px solid rgba(255, 255, 255, 0.03) !important;
-        }
-        .fc-daygrid-event {
-            font-size: 0.58rem !important;
-            padding: 0px !important;
-            margin: 0.5px 0 !important;
-        }
-        .fc .fc-scroller-harness {
-            overflow: hidden !important;
-        }
-
-        /* Linear Matrix Compact Micro-Grid Utilities */
-        .matrix-cell {
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 6px;
-            font-family: monospace;
-            border-right: 1px solid rgba(255, 255, 255, 0.03);
-            line-height: 1;
+        .fc-theme-standard td, .fc-theme-standard th { border: 1px solid rgba(255, 255, 255, 0.04) !important; }
+        .fc-daygrid-event { font-size: 0.5rem !important; padding: 1px !important; margin: 0.5px !important; }
+        
+        /* Linear Timeline Timeline Grid Overlay */
+        .timeline-grid {
+            background-image: repeating-linear-gradient(
+                to right,
+                transparent,
+                transparent calc(100% / 31 - 1px),
+                rgba(255, 255, 255, 0.05) calc(100% / 31)
+            );
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200 min-h-screen w-screen font-sans relative overflow-hidden select-none">
+<body class="text-slate-200 font-sans relative select-none flex">
 
-    <!-- BACKDROP YOUTUBE LOOPER -->
-    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <iframe class="w-screen h-screen scale-125 origin-center" 
-                src="https://www.youtube.com/embed/HuZ6wat9HHg?autoplay=1&mute=1&loop=1&playlist=HuZ6wat9HHg&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3" 
-                frameborder="0" 
-                allow="autoplay; encrypted-media" 
-                allowfullscreen>
+    <!-- Reliable Background Video Embed -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <!-- Using a highly reliable embeddable ID. Swap 'jfKfPfyJRdk' with your preferred video ID -->
+        <iframe class="w-full h-full scale-[1.2] origin-center" 
+                src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk&controls=0&showinfo=0&rel=0" 
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
         </iframe>
-        <div class="absolute inset-0 bg-slate-950/60 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-slate-950/70 mix-blend-multiply"></div>
     </div>
 
-    <!-- GLOBAL WRAPPER INTERFACE -->
-    <main class="relative z-10 w-full h-screen p-2 flex flex-row gap-2 overflow-hidden">
+    <!-- MAIN DASHBOARD LAYOUT -->
+    <main class="relative z-10 w-full h-full p-2 flex gap-2">
         
-        <!-- ================= LEFT SIDEBAR PIPELINE (EXACT CLONE OF IMAGE_39CC06.JPG) ================= -->
-        <section class="w-[340px] flex-none h-full flex flex-col gap-2 overflow-hidden">
+        <!-- LEFT COLUMN: CALENDARS (Fixed width, dynamic vertical compression) -->
+        <section class="w-[300px] flex-none h-full flex flex-col gap-2">
             
-            <!-- MODULE 1: INTERACTIVE AGENDA & TASKS (18% Height Allocation) -->
-            <div class="glass-panel rounded-xl p-2 flex flex-col h-[18%] overflow-hidden">
-                <div class="flex justify-between items-center mb-1 flex-none">
-                    <h2 class="text-[9px] font-bold tracking-wider text-purple-400 uppercase">Agenda & Tasks</h2>
-                    <span class="text-[8px] text-slate-500 font-mono">02.06.2026</span>
+            <!-- 1. Tasks (15% height) -->
+            <div class="glass-panel p-2 flex flex-col h-[15%]">
+                <div class="flex justify-between items-center mb-1">
+                    <h2 class="text-[8px] font-bold tracking-widest text-purple-400 uppercase">Tasks</h2>
+                    <span class="text-[7px] text-slate-500 font-mono">02.06.2026</span>
                 </div>
-                <div class="space-y-0.5 overflow-y-auto pr-0.5 flex-1 text-[10px]">
-                    <label class="flex items-center space-x-2 bg-white/[0.01] px-1.5 py-0.5 rounded border border-white/5 cursor-pointer">
-                        <input type="checkbox" class="accent-purple-500 scale-75 rounded bg-slate-800 border-white/10" checked>
-                        <span class="line-through text-slate-500 truncate">Check fitness tracker stats</span>
+                <div class="overflow-y-auto space-y-1 flex-1 text-[9px]">
+                    <label class="flex items-center space-x-2 bg-white/[0.02] p-1 rounded border border-white/5">
+                        <input type="checkbox" class="accent-purple-500 scale-75" checked>
+                        <span class="line-through text-slate-500">Log 3,000 cal target</span>
                     </label>
-                    <label class="flex items-center space-x-2 bg-white/[0.01] px-1.5 py-0.5 rounded border border-white/5 cursor-pointer">
-                        <input type="checkbox" class="accent-purple-500 scale-75 rounded bg-slate-800 border-white/10">
-                        <span class="text-slate-300 truncate">Review 3DEXPERIENCE data layers</span>
+                    <label class="flex items-center space-x-2 bg-white/[0.02] p-1 rounded border border-white/5">
+                        <input type="checkbox" class="accent-purple-500 scale-75">
+                        <span class="text-slate-300">Finalize 3DEXPERIENCE consulting docs</span>
                     </label>
                 </div>
             </div>
 
-            <!-- MODULE 2: INTERACTIVE MAIN CALENDAR GRID (52% Height Allocation) -->
-            <div class="glass-panel rounded-xl p-2 flex flex-col h-[52%] overflow-hidden">
-                <div id="calendar" class="w-full h-full flex-1"></div>
+            <!-- 2. Main Calendar (45% height) -->
+            <div class="glass-panel p-2 flex flex-col h-[45%]">
+                <div id="calendar" class="w-full h-full"></div>
             </div>
 
-            <!-- MODULE 3: COMPRESSED LINEAR YEAR MATRIX (30% Height Allocation) -->
-            <div class="glass-panel rounded-xl p-2 flex flex-col h-[30%] overflow-hidden">
-                <div class="flex justify-between items-center mb-0.5 flex-none">
-                    <h2 class="text-[9px] font-bold tracking-wider text-fuchsia-400 uppercase">Linear Matrix Calendar</h2>
-                    <span class="text-[7px] font-mono text-slate-500">Year Overview</span>
+            <!-- 3. Linear Gantt Calendar (40% height) -->
+            <div class="glass-panel p-2 flex flex-col h-[40%]">
+                <div class="flex justify-between items-center mb-1">
+                    <h2 class="text-[8px] font-bold tracking-widest text-fuchsia-400 uppercase">Linear Timeline</h2>
+                    <span class="text-[7px] text-slate-500 font-mono">2026</span>
                 </div>
                 
-                <!-- Inner scroll view containing matrix tracks natively -->
-                <div class="flex-1 overflow-x-auto overflow-y-hidden bg-black/20 rounded p-0.5 border border-white/5">
-                    <div class="min-w-[420px] flex flex-col h-full justify-between" id="linear-matrix-canvas">
-                        <!-- Handled inside Javascript initialization layer -->
-                    </div>
+                <!-- 12-Month Timeline Container -->
+                <div class="flex-1 overflow-hidden flex flex-col text-[7px]" id="linear-timeline">
+                    <!-- Javascript populates this area -->
                 </div>
             </div>
 
         </section>
 
-        <!-- ================= CENTER-RIGHT WORKSPACE AREA ================= -->
-        <section class="flex-1 h-full flex flex-col justify-between items-center p-2 overflow-hidden">
+        <!-- CENTER/RIGHT COLUMN: WORKSPACE -->
+        <section class="flex-1 h-full flex flex-col justify-between items-center px-4 py-2">
             
-            <!-- TOP MOUNTED WEATHER FORECAST GRID -->
-            <div class="glass-panel rounded-xl p-2 flex items-center space-x-4 max-w-2xl w-full justify-between flex-none">
-                <!-- Live Context Status -->
-                <div class="flex items-center space-x-2 pl-1">
-                    <div class="text-left">
-                        <div class="text-[9px] text-slate-400 font-medium">Munich, DE</div>
-                        <div class="text-xl font-bold tracking-tighter text-white leading-none">20°C</div>
-                    </div>
-                    <div class="text-[8px] text-slate-500 border-l border-white/10 pl-2">
-                        <div>Hum: 65%</div>
-                        <div>Wind: 12km/h</div>
+            <!-- Weather Module (Top) -->
+            <div class="glass-panel p-2 flex items-center w-full max-w-2xl justify-between">
+                <div class="flex items-center space-x-3 pl-2">
+                    <div>
+                        <div class="text-[10px] text-slate-400 font-medium">Munich, DE</div>
+                        <div class="text-2xl font-bold text-white leading-none">20°C</div>
                     </div>
                 </div>
-
-                <!-- 7-Day Matrix Row -->
-                <div class="flex items-center space-x-1 flex-1 justify-end font-mono">
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Tue</div>
-                        <div class="my-0.5">🌧️</div>
-                        <div class="text-slate-300">23°<span class="text-slate-500">13</span></div>
-                    </div>
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Wed</div>
-                        <div class="my-0.5">🌧️</div>
-                        <div class="text-slate-300">24°<span class="text-slate-500">13</span></div>
-                    </div>
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Thu</div>
-                        <div class="my-0.5">☁️</div>
-                        <div class="text-slate-300">19°<span class="text-slate-500">13</span></div>
-                    </div>
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Fri</div>
-                        <div class="my-0.5">🌧️</div>
-                        <div class="text-slate-300">23°<span class="text-slate-500">12</span></div>
-                    </div>
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Sat</div>
-                        <div class="my-0.5">⛅</div>
-                        <div class="text-slate-300">20°<span class="text-slate-500">11</span></div>
-                    </div>
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Sun</div>
-                        <div class="my-0.5">⛅</div>
-                        <div class="text-slate-300">22°<span class="text-slate-500">14</span></div>
-                    </div>
-                    <div class="text-center px-1 py-0.5 bg-white/[0.01] border border-white/5 rounded min-w-[38px] text-[8px]">
-                        <div class="text-slate-400 font-bold">Mon</div>
-                        <div class="my-0.5">🌧️</div>
-                        <div class="text-slate-300">24°<span class="text-slate-500">11</span></div>
-                    </div>
+                <div class="flex space-x-2 pr-2 font-mono text-[8px] text-center">
+                    <div class="bg-white/5 rounded px-1.5 py-1"><div class="text-slate-400">Tue</div><div>🌧️</div><div>23°</div></div>
+                    <div class="bg-white/5 rounded px-1.5 py-1"><div class="text-slate-400">Wed</div><div>🌧️</div><div>24°</div></div>
+                    <div class="bg-white/5 rounded px-1.5 py-1"><div class="text-slate-400">Thu</div><div>☁️</div><div>19°</div></div>
+                    <div class="bg-white/5 rounded px-1.5 py-1"><div class="text-slate-400">Fri</div><div>🌧️</div><div>23°</div></div>
+                    <div class="bg-white/5 rounded px-1.5 py-1"><div class="text-slate-400">Sat</div><div>⛅</div><div>20°</div></div>
                 </div>
             </div>
 
-            <!-- DUMMY INFRASTRUCTURE SPACE FILLER (Leaves room for maps, finance metrics later) -->
-            <div class="flex-1 w-full flex items-center justify-center opacity-20 pointer-events-none italic text-xs">
-                Main Screen Overlay Space
-            </div>
-
-            <!-- BOTTOM RUNNING AI INTERACTION FIELD -->
-            <div class="w-full max-w-lg glass-panel p-1 rounded-xl border border-white/10 flex items-center space-x-2 flex-none mb-1 shadow-2xl">
-                <!-- Dropdown Engine Matrix -->
-                <select id="model-selector" class="bg-purple-950/40 border border-purple-500/20 rounded-lg px-2 py-1 text-[10px] text-purple-300 focus:outline-none cursor-pointer">
-                    <option value="gemini-pro" selected>✨ Gemini 1.5 Pro</option>
-                    <option value="gemini-flash">⚡ Gemini 1.5 Flash</option>
-                    <option value="claude-sonnet">🤖 Claude 3.5 Sonnet</option>
+            <!-- AI Command Bar (Bottom) -->
+            <div class="w-full max-w-lg glass-panel p-1.5 flex items-center space-x-2 mb-2">
+                <select class="bg-purple-900/40 border border-purple-500/30 rounded px-2 py-1 text-[9px] text-purple-300 outline-none">
+                    <option>✨ Gemini Pro</option>
+                    <option>⚡ Gemini Flash</option>
                 </select>
-                
-                <input type="text" 
-                       placeholder="Ask Gemini..." 
-                       class="bg-transparent flex-1 text-[11px] text-slate-100 placeholder-slate-500 focus:outline-none px-1" />
-                
-                <button class="p-1.5 text-purple-400 hover:text-purple-300 pr-2">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
-                    </svg>
+                <input type="text" placeholder="Ask Command Center..." class="bg-transparent flex-1 text-[10px] text-white outline-none px-2" />
+                <button class="text-purple-400 hover:text-white pr-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
                 </button>
             </div>
 
         </section>
-
     </main>
 
-    <!-- ================= CONTROLLER INTERPOLATION SCRIPT ================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. GENERATE SIDEBAR FULLCALENDAR INTERFACE
+            // 1. Initialize Compressed Monthly/Weekly Calendar
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                handleWindowResize: true,
                 height: '100%',
-                headerToolbar: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek'
-                },
+                headerToolbar: { left: 'prev,next', center: 'title', right: 'dayGridMonth,timeGridWeek' },
                 initialDate: '2026-06-01',
                 events: [
-                    { title: 'Arbeitsphase', start: '2026-06-01', end: '2026-06-03', color: '#0284c7' },
-                    { title: 'Paris Trip', start: '2026-06-03', end: '2026-06-08', color: '#db2777' }
+                    { title: 'Apartment Move', start: '2026-06-05', end: '2026-06-08', color: '#0ea5e9' },
+                    { title: '3DEXPERIENCE Week', start: '2026-06-16', end: '2026-06-19', color: '#d946ef' }
                 ]
             });
             calendar.render();
 
-            // 2. BUILD MICRO LINEAR CALENDAR TRACK MATRIX (Synchronized horizontally)
-            const matrixCanvas = document.getElementById('linear-matrix-canvas');
-            const weekdaysShort = ['S', 'S', 'M', 'D', 'M', 'D', 'F'];
-            const monthsData = [
-                { name: 'Jan', days: 31, offset: 4 }, { name: 'Feb', days: 28, offset: 0 },
-                { name: 'Mar', days: 31, offset: 0 }, { name: 'Apr', days: 30, offset: 3 },
-                { name: 'May', days: 31, offset: 5 }, { name: 'Jun', days: 30, offset: 1 },
-                { name: 'Jul', days: 31, offset: 3 }, { name: 'Aug', days: 31, offset: 6 },
-                { name: 'Sep', days: 30, offset: 2 }, { name: 'Oct', days: 31, offset: 4 },
-                { name: 'Nov', days: 30, offset: 0 }, { name: 'Dec', days: 31, offset: 2 }
+            // 2. Initialize Gantt-Style Linear Timeline
+            const timelineEl = document.getElementById('linear-timeline');
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            // Event Data Mapping (Month index 0-11, start day 1-31, duration in days)
+            const linearEvents = [
+                { month: 2, start: 10, duration: 14, title: 'Kenya Safari', color: 'bg-emerald-500' },
+                { month: 4, start: 20, duration: 10, title: 'Moving prep', color: 'bg-sky-500' },
+                { month: 5, start: 16, duration: 3, title: 'Darmstadt', color: 'bg-fuchsia-500' },
+                { month: 7, start: 11, duration: 20, title: 'Thailand / Nepal', color: 'bg-pink-500' },
+                { month: 8, start: 1, duration: 13, title: 'China', color: 'bg-orange-500' }
             ];
 
-            // Build Matrix Day Columns Header Line
-            const headerRow = document.createElement('div');
-            headerRow.className = "grid grid-cols-40 text-center font-mono text-[6px] text-slate-600 border-b border-white/5 pb-0.5 font-bold";
-            const blankLabel = document.createElement('div');
-            blankLabel.className = "col-span-3 text-left pl-0.5 text-[7px] text-slate-500";
-            blankLabel.innerText = '2026';
-            headerRow.appendChild(blankLabel);
+            months.forEach((month, index) => {
+                const row = document.createElement('div');
+                row.className = "flex-1 flex border-b border-white/[0.02] items-center relative";
+                
+                // Month Label
+                const label = document.createElement('div');
+                label.className = "w-6 text-[6px] font-bold text-slate-400 uppercase tracking-tighter";
+                label.innerText = month;
+                row.appendChild(label);
 
-            for (let i = 0; i < 37; i++) {
-                const dayLetter = document.createElement('div');
-                dayLetter.innerText = weekdaysShort[i % 7];
-                headerRow.appendChild(dayLetter);
-            }
-            matrixCanvas.appendChild(headerRow);
+                // Grid Area (31 days)
+                const grid = document.createElement('div');
+                grid.className = "flex-1 h-full relative timeline-grid";
 
-            // Travel Segment Interval Configurations
-            const eventBands = {
-                "Feb": { start: 5, end: 7, color: "bg-pink-600" },
-                "Mar": { start: 5, end: 15, color: "bg-fuchsia-700" },
-                "Apr": { start: 3, end: 6, color: "bg-pink-600" },
-                "Jun": { start: 4, end: 8, color: "bg-purple-600" },
-                "Aug": { start: 5, end: 9, color: "bg-pink-600" }
-            };
-
-            // Loop and render matrix rails inside layout
-            monthsData.forEach((m) => {
-                const monthRow = document.createElement('div');
-                monthRow.className = "grid grid-cols-40 items-center text-center border-b border-white/[0.01] flex-1 min-h-[9px] relative";
-
-                const nameBlock = document.createElement('div');
-                nameBlock.className = "col-span-3 text-left pl-0.5 text-[7px] font-bold text-slate-400";
-                nameBlock.innerText = m.name;
-                monthRow.appendChild(nameBlock);
-
-                let activeDayCounter = 1;
-                for (let c = 0; c < 37; c++) {
-                    const square = document.createElement('div');
-                    square.className = "matrix-cell text-slate-600 h-full border-l border-white/[0.01]";
-
-                    if (c >= m.offset && activeDayCounter <= m.days) {
-                        square.innerText = activeDayCounter;
-                        square.classList.replace('text-slate-600', 'text-slate-400');
-
-                        if (eventBands[m.name] && activeDayCounter >= eventBands[m.name].start && activeDayCounter <= eventBands[m.name].end) {
-                            square.className += ` ${eventBands[m.name].color} text-white font-bold`;
-                        }
-                        activeDayCounter++;
-                    } else {
-                        square.innerHTML = "";
-                        square.className += " bg-black/40 opacity-5";
+                // Render Events for this month
+                linearEvents.forEach(evt => {
+                    if (evt.month === index) {
+                        const bar = document.createElement('div');
+                        // Calculate percentage positions across the 31-day grid
+                        const leftPos = ((evt.start - 1) / 31) * 100;
+                        const widthPct = (evt.duration / 31) * 100;
+                        
+                        bar.className = `absolute h-2/3 top-1/6 rounded-sm ${evt.color} flex items-center overflow-hidden whitespace-nowrap z-10 shadow-sm shadow-black/50`;
+                        bar.style.left = `${leftPos}%`;
+                        bar.style.width = `${widthPct}%`;
+                        bar.innerHTML = `<span class="px-1 text-[5px] text-white font-bold leading-none">${evt.title}</span>`;
+                        grid.appendChild(bar);
                     }
-                    monthRow.appendChild(square);
-                }
-                matrixCanvas.appendChild(monthRow);
+                });
+
+                row.appendChild(grid);
+                timelineEl.appendChild(row);
             });
         });
     </script>
