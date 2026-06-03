@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compact Dashboard</title>
+  <title>Compact Dashboard · Storm</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,27 +19,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
   <style>
     :root {
       --border: rgba(255, 255, 255, 0.08);
-      --border-strong: rgba(255, 255, 255, 0.14);
+      --border-strong: rgba(255, 255, 255, 0.16);
       --text-dim: rgba(255, 255, 255, 0.45);
       --text-muted: rgba(255, 255, 255, 0.7);
       --text-bright: rgba(255, 255, 255, 0.95);
-      --accent: rgba(99, 179, 237, 1);
+      --accent: rgb(125, 211, 252);
     }
 
     * { box-sizing: border-box; }
 
     html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
       overflow: hidden;
       font-family: 'Manrope', sans-serif;
       color: var(--text-muted);
@@ -50,38 +48,41 @@
 
     .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* --- Glass panels --- */
+    /* --- Glass --- */
     .glass {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(8, 13, 28, 0.78);
       backdrop-filter: blur(12px) saturate(140%);
       -webkit-backdrop-filter: blur(12px) saturate(140%);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 10px 12px;
       overflow: hidden;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px -10px rgba(0, 0, 0, 0.6);
     }
 
-    /* --- 2px transparent scrollbars --- */
+    /* --- 2px scrollbars --- */
     ::-webkit-scrollbar { width: 2px; height: 2px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.35); }
     * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent; }
 
-    /* --- Full-bleed YouTube background --- */
-    .yt-bg {
-      position: fixed; inset: 0; z-index: -10; overflow: hidden;
-    }
+    /* --- YouTube background (storm clouds aerial) --- */
+    .yt-bg { position: fixed; inset: 0; z-index: -10; overflow: hidden; }
     .yt-bg iframe {
       position: absolute; top: 50%; left: 50%;
-      width: 177.77vh;     /* 16:9 */
-      height: 56.25vw;
-      min-width: 100vw;
-      min-height: 100vh;
+      width: 177.77vh; height: 56.25vw;
+      min-width: 100vw; min-height: 100vh;
       transform: translate(-50%, -50%);
-      pointer-events: none;
-      border: 0;
+      pointer-events: none; border: 0;
+    }
+
+    /* Subtle rain-streak vignette baked over the video for atmosphere */
+    .yt-vignette {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(2,6,23,0) 0%, rgba(2,6,23,0.55) 100%),
+        linear-gradient(180deg, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.7) 100%);
     }
 
     /* --- Panel headers --- */
@@ -96,7 +97,7 @@
       color: var(--text-bright);
     }
 
-    /* --- Task list --- */
+    /* --- Tasks --- */
     .task-row {
       display: flex; align-items: center; gap: 8px;
       padding: 3px 2px;
@@ -119,7 +120,7 @@
       content: ''; position: absolute;
       left: 3px; top: 0px;
       width: 3px; height: 6px;
-      border: solid white; border-width: 0 1.5px 1.5px 0;
+      border: solid #0c1426; border-width: 0 1.5px 1.5px 0;
       transform: rotate(45deg);
     }
     .task-row input[type="checkbox"]:checked + span {
@@ -133,10 +134,10 @@
       --fc-border-color: rgba(255, 255, 255, 0.05);
       --fc-page-bg-color: transparent;
       --fc-neutral-bg-color: transparent;
-      --fc-today-bg-color: rgba(99, 179, 237, 0.10);
-      --fc-event-bg-color: rgba(99, 179, 237, 0.85);
+      --fc-today-bg-color: rgba(125, 211, 252, 0.10);
+      --fc-event-bg-color: rgba(125, 211, 252, 0.85);
       --fc-event-border-color: transparent;
-      --fc-event-text-color: white;
+      --fc-event-text-color: #0c1426;
     }
     .fc .fc-toolbar.fc-header-toolbar { margin-bottom: 4px; }
     .fc .fc-toolbar-title {
@@ -175,51 +176,105 @@
     .fc-daygrid-event {
       font-size: 8px; padding: 0 2px; margin-top: 1px; border-radius: 2px;
     }
-    .fc .fc-more-link {
-      font-size: 7px; padding: 0 2px;
-      color: var(--text-dim);
-    }
+    .fc .fc-more-link { font-size: 7px; padding: 0 2px; color: var(--text-dim); }
 
-    /* --- Linear Gantt grid --- */
+    /* ====================================================================
+       LINEAR GANTT — restyled to match the reference dashboard image
+       --------------------------------------------------------------------
+       Grid columns: [label] + 37 day-slots = 38 columns.
+       Grid rows: [day-of-week header (10px)] + 12 month rows (1fr each).
+       Each day cell shows the day-number at the top; multi-day bars
+       sit in the lower half so the number stays readable above them.
+       ==================================================================== */
     #gantt-container { height: 100%; display: flex; flex-direction: column; }
     .gantt-grid {
       display: grid;
-      /* Column 1 = month label, columns 2..38 = 37 day slots
-         (max-length month is 31 days starting on Saturday → ends at col 38) */
-      grid-template-columns: 22px repeat(37, 1fr);
-      grid-template-rows: repeat(12, 1fr);
+      grid-template-columns: 24px repeat(37, 1fr);
+      grid-template-rows: 10px repeat(12, 1fr);
       flex: 1; gap: 1px;
       position: relative; min-height: 0;
     }
+    .gantt-dow {
+      font-size: 6.5px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .gantt-dow.is-weekend { color: rgba(125, 211, 252, 0.6); }
+
     .gantt-month-label {
       display: flex; align-items: center;
-      font-size: 8px; font-weight: 600;
-      color: var(--text-dim);
-      text-transform: uppercase; letter-spacing: 0.08em;
+      font-size: 8px; font-weight: 700;
+      color: var(--text-bright);
+      text-transform: uppercase; letter-spacing: 0.06em;
       font-family: 'JetBrains Mono', monospace;
     }
+
     .gantt-day {
       background: rgba(255, 255, 255, 0.025);
       border-radius: 1px;
       min-height: 0;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 1px;
+      position: relative; overflow: hidden;
     }
     .gantt-day.weekend { background: rgba(255, 255, 255, 0.06); }
     .gantt-day.today {
-      background: rgba(99, 179, 237, 0.45);
+      background: rgba(125, 211, 252, 0.35);
       box-shadow: 0 0 0 1px var(--accent);
     }
+    .gantt-day-num {
+      font-size: 6.5px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 500; line-height: 1;
+      pointer-events: none;
+    }
+    .gantt-day.weekend .gantt-day-num { color: rgba(255, 255, 255, 0.78); font-weight: 600; }
+    .gantt-day.today .gantt-day-num { color: white; font-weight: 700; }
+    .gantt-day.has-event {
+      /* background-color is set inline from event color */
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2) inset;
+    }
+    .gantt-day.has-event .gantt-day-num {
+      color: white; font-weight: 700;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+    }
+    /* Tiny label squeezed to top of cells with single-day events */
+    .gantt-day-tag {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      font-size: 4.5px;
+      line-height: 1.1;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: 0 1px;
+      pointer-events: none;
+    }
+
+    /* Multi-day bar: anchored to the BOTTOM half of the row so the day
+       numbers above remain visible — matches the screenshot. */
     .gantt-bar {
-      border-radius: 2px;
-      align-self: stretch;
-      font-size: 7px;
-      padding: 0 4px;
+      border-radius: 1.5px;
+      align-self: end;
+      height: 52%;
+      font-size: 5.5px;
+      padding: 0 3px;
       color: white;
-      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       display: flex; align-items: center;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-      margin: 1px 0;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      font-weight: 700;
+      font-family: 'Manrope', sans-serif;
+      margin-bottom: 1px;
+      letter-spacing: 0.03em;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
     }
 
     /* --- Weather --- */
@@ -261,30 +316,31 @@
     @keyframes pulse-dot { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
     .live-dot { animation: pulse-dot 1.8s infinite; }
 
-    /* --- Page-load reveal --- */
+    /* --- Reveal --- */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .fade-in { animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
   </style>
 </head>
 <body>
-  <!-- =============== YouTube background =============== -->
+  <!-- ===== YouTube background: aerial storm clouds, looping & muted ===== -->
   <div class="yt-bg">
     <iframe
-      src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
+      src="https://www.youtube.com/embed/6jWtghgPbpk?autoplay=1&mute=1&loop=1&playlist=6jWtghgPbpk&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1&start=5"
       allow="autoplay; encrypted-media"
       title="background"
     ></iframe>
+    <div class="yt-vignette"></div>
     <div class="absolute inset-0 bg-slate-950/70"></div>
   </div>
 
-  <!-- =============== Main layout =============== -->
+  <!-- ===== Layout ===== -->
   <div class="flex h-screen w-screen overflow-hidden p-3 gap-3 relative">
-    <!-- ===== LEFT SIDEBAR ===== -->
+    <!-- LEFT SIDEBAR -->
     <aside class="w-[300px] grid gap-3 grid-rows-[15fr_45fr_40fr]">
-      <!-- Tasks 15% -->
+      <!-- Tasks -->
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.05s">
         <div class="panel-header">
           <span class="panel-title">Tasks</span>
@@ -299,7 +355,7 @@
         </div>
       </section>
 
-      <!-- Main Calendar 45% -->
+      <!-- Main Calendar -->
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.1s">
         <div class="panel-header">
           <span class="panel-title">Calendar</span>
@@ -310,7 +366,7 @@
         </div>
       </section>
 
-      <!-- Gantt 40% -->
+      <!-- Linear Gantt -->
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.15s">
         <div class="panel-header">
           <span class="panel-title">Year Overview · <span id="gantt-year"></span></span>
@@ -322,26 +378,25 @@
       </section>
     </aside>
 
-    <!-- ===== WORKSPACE ===== -->
+    <!-- WORKSPACE -->
     <main class="flex-1 flex flex-col gap-3">
       <!-- Weather -->
       <section class="glass flex items-center gap-5 fade-in" style="animation-delay: 0.2s">
         <div class="flex items-center gap-3 pr-5 border-r border-white/10">
-          <span class="text-4xl leading-none">☀️</span>
+          <span class="text-4xl leading-none">⛈️</span>
           <div>
             <div class="flex items-baseline gap-1">
-              <span class="text-3xl font-extralight text-white tracking-tight">72</span>
+              <span class="text-3xl font-extralight text-white tracking-tight">54</span>
               <span class="text-[10px] text-white/60">°F</span>
             </div>
             <div class="text-[9px] text-white/50 font-mono uppercase tracking-widest mt-0.5">
-              Humidity 45% · Sunny
+              Humidity 92% · Storm
             </div>
           </div>
         </div>
         <div class="flex flex-1 items-stretch" id="forecast"></div>
       </section>
 
-      <!-- Spacer (background shows through) -->
       <div class="flex-1"></div>
 
       <!-- AI Command Bar -->
@@ -354,7 +409,7 @@
         <span class="text-[11px] text-white/20 font-mono">›</span>
         <input type="text" id="ai-input" placeholder="Ask anything…" autocomplete="off" />
         <button id="ai-submit" title="Submit">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white"
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0c1426"
                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
@@ -366,29 +421,30 @@
 
   <script>
     // ====================================================================
-    //  CONFIG — fill these in
+    //  CONFIG
     // ====================================================================
     const GOOGLE_CALENDAR_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE';
     const GOOGLE_CALENDAR_ID       = 'YOUR_CALENDAR_ID@group.calendar.google.com';
 
     const YEAR        = new Date().getFullYear();
     const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const DAY_LETTERS = ['S','M','T','W','T','F','S'];  // Sun-anchored
     const DAY_MS      = 86400000;
 
-    // Palette for Gantt bars (assigned in chronological order)
+    // Palette borrowed from the reference: pinks/blues/oranges/teals
     const EVENT_COLORS = [
-      'rgba(96, 165, 250, 0.85)',   // blue
-      'rgba(110, 231, 183, 0.85)',  // emerald
-      'rgba(251, 146, 60, 0.85)',   // orange
-      'rgba(244, 114, 182, 0.85)',  // pink
-      'rgba(167, 139, 250, 0.85)',  // violet
-      'rgba(250, 204, 21, 0.85)',   // amber
-      'rgba(248, 113, 113, 0.85)',  // red
-      'rgba(45, 212, 191, 0.85)',   // teal
+      'rgba(236, 72, 153, 0.92)',    // pink — travel
+      'rgba(56, 189, 248, 0.92)',    // sky blue — events
+      'rgba(251, 146, 60, 0.92)',    // orange — short markers
+      'rgba(20, 184, 166, 0.92)',    // teal — holidays
+      'rgba(168, 85, 247, 0.92)',    // purple
+      'rgba(110, 231, 183, 0.92)',   // emerald
+      'rgba(250, 204, 21, 0.92)',    // amber
+      'rgba(248, 113, 113, 0.92)',   // red
     ];
 
     // ====================================================================
-    //  TASKS — checkbox counter
+    //  TASKS counter
     // ====================================================================
     const updateTaskCount = () => {
       const all  = document.querySelectorAll('#task-list input[type="checkbox"]');
@@ -399,16 +455,16 @@
     updateTaskCount();
 
     // ====================================================================
-    //  WEATHER — mock 7-day forecast
+    //  WEATHER (mock — themed to match the stormy backdrop)
     // ====================================================================
     const forecast = [
-      { day: 'TUE', emoji: '☀️', high: 75, low: 62 },
-      { day: 'WED', emoji: '🌤️', high: 73, low: 60 },
-      { day: 'THU', emoji: '⛅', high: 68, low: 58 },
-      { day: 'FRI', emoji: '🌧️', high: 65, low: 55 },
-      { day: 'SAT', emoji: '⛈️', high: 63, low: 54 },
-      { day: 'SUN', emoji: '🌤️', high: 70, low: 58 },
-      { day: 'MON', emoji: '☀️', high: 74, low: 61 },
+      { day: 'TUE', emoji: '⛈️', high: 56, low: 49 },
+      { day: 'WED', emoji: '🌧️', high: 58, low: 50 },
+      { day: 'THU', emoji: '🌧️', high: 60, low: 52 },
+      { day: 'FRI', emoji: '⛅', high: 64, low: 53 },
+      { day: 'SAT', emoji: '☁️', high: 62, low: 51 },
+      { day: 'SUN', emoji: '🌦️', high: 60, low: 50 },
+      { day: 'MON', emoji: '🌧️', high: 57, low: 49 },
     ];
     const fEl = document.getElementById('forecast');
     forecast.forEach(d => {
@@ -425,7 +481,7 @@
     });
 
     // ====================================================================
-    //  FULLCALENDAR (Google Calendar plugin)
+    //  FULLCALENDAR
     // ====================================================================
     document.addEventListener('DOMContentLoaded', () => {
       const calendar = new FullCalendar.Calendar(document.getElementById('main-calendar'), {
@@ -447,44 +503,56 @@
     });
 
     // ====================================================================
-    //  LINEAR GANTT — custom grid built with vanilla JS + CSS Grid
+    //  LINEAR GANTT
     // ====================================================================
     document.getElementById('gantt-year').textContent = YEAR;
 
     /* ───────────────────────────────────────────────────────────────────
-     * GRID ALIGNMENT — "First Weekend Overlap" logic
+     * GRID ALIGNMENT — "First Weekend Overlap" logic (unchanged)
      * ───────────────────────────────────────────────────────────────────
-     * Goal: every Saturday (and every Sunday, Monday, …) in the year sits
-     * in the SAME vertical column across all 12 month-rows — so weekends
-     * line up like a barcode down the page.
-     *
-     * Trick: use a grid wide enough to absorb the worst-case offset.
-     *   - Column 1 holds the month label.
-     *   - Columns 2 … 38 are 37 day-slots.
-     *   - 37 is the max needed: a 31-day month starting on Saturday
-     *     (offset = 6) ends at column 2 + 6 + 30 = 38.
+     * Layout: 38 grid columns total — column 1 is the month label, columns
+     * 2..38 are 37 day-slots. A 31-day month starting on Saturday ends at
+     * column 2 + 6 + 30 = 38, so 37 slots is exactly enough.
      *
      * For each month m:
-     *   W = new Date(YEAR, m, 1).getDay()      // 0 = Sun … 6 = Sat
+     *   W = new Date(YEAR, m, 1).getDay()   // 0 = Sun … 6 = Sat
      *   day D goes in column   2 + W + (D − 1)
      *
-     * Because every month uses the SAME formula keyed off its own W,
-     * day-of-week always lands on the same grid column. Sundays land in
-     * {2, 9, 16, 23, 30, 37}, Saturdays in {8, 15, 22, 29, 36}, etc.
+     * Because the formula is keyed off W, all Sundays land in the same
+     * columns {2, 9, 16, 23, 30, 37}, all Mondays in {3, 10, 17, 24, 31},
+     * etc. → days-of-the-week stack into vertical stripes across all 12
+     * month-rows. We exploit this to draw a SINGLE day-of-week header
+     * (row 1 of the grid) that correctly labels every column for every
+     * month at once.
      * ─────────────────────────────────────────────────────────────────── */
     function buildGanttGrid() {
       const grid = document.getElementById('gantt-grid');
       grid.innerHTML = '';
       const today = new Date();
 
-      for (let m = 0; m < 12; m++) {
-        const startWeekday = new Date(YEAR, m, 1).getDay();          // W
-        const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
+      // Day-of-week header — row 1, columns 2..38.
+      // The pattern "Sun Mon Tue Wed Thu Fri Sat" simply repeats because
+      // of the alignment property above.
+      for (let i = 0; i < 37; i++) {
+        const dow = document.createElement('div');
+        dow.className = 'gantt-dow';
+        if (i % 7 === 0 || i % 7 === 6) dow.classList.add('is-weekend');
+        dow.style.gridRow = 1;
+        dow.style.gridColumn = i + 2;
+        dow.textContent = DAY_LETTERS[i % 7];
+        grid.appendChild(dow);
+      }
 
-        // Month label in column 1
+      // Month rows (grid rows 2..13)
+      for (let m = 0; m < 12; m++) {
+        const startWeekday = new Date(YEAR, m, 1).getDay();      // W
+        const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
+        const gridRow      = m + 2;   // +1 for 1-indexed grid, +1 for header
+
+        // Month label (column 1)
         const label = document.createElement('div');
         label.className = 'gantt-month-label';
-        label.style.gridRow    = m + 1;
+        label.style.gridRow    = gridRow;
         label.style.gridColumn = 1;
         label.textContent = MONTH_NAMES[m];
         grid.appendChild(label);
@@ -503,8 +571,14 @@
             today.getDate()     === d
           ) cell.classList.add('today');
 
-          cell.style.gridRow    = m + 1;
-          cell.style.gridColumn = 2 + startWeekday + (d - 1);   // <-- the formula
+          cell.style.gridRow    = gridRow;
+          cell.style.gridColumn = 2 + startWeekday + (d - 1);   // ← the formula
+          cell.dataset.date     = `${YEAR}-${m}-${d}`;
+
+          const num = document.createElement('span');
+          num.className = 'gantt-day-num';
+          num.textContent = d;
+          cell.appendChild(num);
           grid.appendChild(cell);
         }
       }
@@ -518,7 +592,7 @@
         start = new Date(raw.start.date + 'T00:00:00');
         const endExclusive = new Date(raw.end.date + 'T00:00:00');
         durationDays = Math.round((endExclusive - start) / DAY_MS);
-        end = new Date(endExclusive.getTime() - DAY_MS);   // inclusive last day
+        end = new Date(endExclusive.getTime() - DAY_MS);
       } else {
         start = new Date(raw.start.dateTime);
         end   = new Date(raw.end.dateTime);
@@ -528,33 +602,27 @@
     }
 
     /* ───────────────────────────────────────────────────────────────────
-     * FILTERING & HIERARCHY — "Overarching Event" logic
+     * FILTERING & HIERARCHY — "Overarching Event" logic (unchanged)
      * ───────────────────────────────────────────────────────────────────
-     * Step 1: discard everything that is 1 day or shorter.
+     * Applies ONLY to multi-day events (> 1 day). For the new reference
+     * design, single-day events are *also* shown (as filled cells) — they
+     * are not subject to this filter.
      *
-     * Step 2: when multiple multi-day events overlap, keep only the
-     * LONGEST one — the "overarching" event. Concrete example:
-     *
-     *   "China Trip"     14d   May 1  → May 14
-     *   "Hotel Beijing"   3d   May 3  → May 5    (sits inside China Trip)
-     *   "Conference"      2d   May 8  → May 9    (also inside)
-     *
-     * → only "China Trip" survives.
-     *
-     * Algorithm: sort by duration DESCENDING, then greedily accept any
-     * event that does not overlap an already-accepted (longer-or-equal)
-     * event. Anything that conflicts is, by construction, shorter and
-     * therefore discarded.
+     * Multi-day filter steps:
+     *  1. Keep only events with durationDays > 1.
+     *  2. Sort by duration DESCENDING.
+     *  3. Greedy accept events that do not overlap any already-kept
+     *     (longer-or-equal) event. Because we process longest-first, any
+     *     conflict is by construction shorter and gets dropped — the
+     *     "China Trip beats Hotel Beijing" rule emerges for free.
      *
      * Overlap test for closed intervals [a1,a2] and [b1,b2]:
      *     a1 ≤ b2  AND  a2 ≥ b1
      * ─────────────────────────────────────────────────────────────────── */
     function filterAndPrioritize(events) {
-      // Step 1 — multi-day only (strictly greater than 1 day).
       const multiDay = events.filter(e => e.durationDays > 1);
-
-      // Step 2 — greedy longest-first overlap resolution.
       multiDay.sort((a, b) => b.durationDays - a.durationDays);
+
       const kept = [];
       for (const ev of multiDay) {
         const overlapsLonger = kept.some(k =>
@@ -563,15 +631,37 @@
         if (!overlapsLonger) kept.push(ev);
       }
 
-      // Re-sort chronologically for stable color assignment + rendering.
       kept.sort((a, b) => a.start - b.start);
       kept.forEach((e, i) => (e.color = EVENT_COLORS[i % EVENT_COLORS.length]));
       return kept;
     }
 
-    /** Place one colored bar for `event` on the row for month `m`,
-     *  clipped to that month's date range. Reuses the same column formula
-     *  as buildGanttGrid() so bars sit dead-center over the day cells. */
+    /** Paint single-day events as colored cell backgrounds with a small
+     *  label squeezed to the top of the cell (matching the reference). */
+    function applySingleDayEvents(events) {
+      // Stable colors keyed by month so a row's events vary visually.
+      events
+        .filter(e => e.durationDays <= 1 && e.start.getFullYear() === YEAR)
+        .forEach((ev, i) => {
+          const key  = `${YEAR}-${ev.start.getMonth()}-${ev.start.getDate()}`;
+          const cell = document.querySelector(`.gantt-day[data-date="${key}"]`);
+          if (!cell) return;
+          const color = EVENT_COLORS[(i + 2) % EVENT_COLORS.length];
+          cell.style.background = color;
+          cell.classList.add('has-event');
+          cell.title = `${ev.title} · ${ev.start.toLocaleDateString()}`;
+
+          // Add label tag at the top, if there's space
+          const tag = document.createElement('span');
+          tag.className = 'gantt-day-tag';
+          tag.textContent = ev.title;
+          cell.insertBefore(tag, cell.firstChild);
+        });
+    }
+
+    /** Place a colored bar for `event` on the row for month `m`, clipped
+     *  to that month's days. Bars span columns and sit in the lower half
+     *  of the row so day numbers above remain visible. */
     function placeBarForMonth(event, m) {
       const startWeekday = new Date(YEAR, m, 1).getDay();
       const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
@@ -585,11 +675,11 @@
       const d2 = barEnd.getDate();
 
       const colStart = 2 + startWeekday + (d1 - 1);
-      const colEnd   = 2 + startWeekday + d2;     // grid-column-end line (exclusive)
+      const colEnd   = 2 + startWeekday + d2;     // exclusive line index
 
       const bar = document.createElement('div');
       bar.className = 'gantt-bar';
-      bar.style.gridRow    = m + 1;
+      bar.style.gridRow    = m + 2;                // +1 for 1-index, +1 for header row
       bar.style.gridColumn = `${colStart} / ${colEnd}`;
       bar.style.background = event.color;
       bar.title = `${event.title} · ${event.start.toLocaleDateString()} → ${event.end.toLocaleDateString()} (${event.durationDays}d)`;
@@ -597,21 +687,17 @@
       document.getElementById('gantt-grid').appendChild(bar);
     }
 
-    function renderEvents(events) {
+    function renderMultiDay(events) {
       for (const ev of events) {
         const startMonth = ev.start.getFullYear() === YEAR ? ev.start.getMonth() : 0;
         const endMonth   = ev.end.getFullYear()   === YEAR ? ev.end.getMonth()   : 11;
-        for (let m = startMonth; m <= endMonth; m++) {
-          placeBarForMonth(ev, m);
-        }
+        for (let m = startMonth; m <= endMonth; m++) placeBarForMonth(ev, m);
       }
-      document.getElementById('gantt-count').textContent = `${events.length} events`;
     }
 
     async function loadGanttEvents() {
       buildGanttGrid();
 
-      // Skip fetch with placeholder credentials.
       if (GOOGLE_CALENDAR_API_KEY.startsWith('YOUR_') || GOOGLE_CALENDAR_ID.startsWith('YOUR_')) {
         document.getElementById('gantt-count').textContent = 'add API key';
         return;
@@ -625,12 +711,20 @@
         `&singleEvents=true&maxResults=2500&orderBy=startTime`;
 
       try {
-        const res = await fetch(url);
+        const res    = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data     = await res.json();
-        const parsed   = (data.items || []).map(parseEvent);
-        const filtered = filterAndPrioritize(parsed);
-        renderEvents(filtered);
+        const data   = await res.json();
+        const parsed = (data.items || []).map(parseEvent);
+
+        // Multi-day → filtered overarching bars.
+        // Single-day → colored cells (NEW: no longer discarded).
+        const multiDay = filterAndPrioritize(parsed);
+        applySingleDayEvents(parsed);
+        renderMultiDay(multiDay);
+
+        const singleCount = parsed.filter(e => e.durationDays <= 1).length;
+        document.getElementById('gantt-count').textContent =
+          `${multiDay.length} trips · ${singleCount} days`;
       } catch (err) {
         console.error('Gantt fetch failed:', err);
         document.getElementById('gantt-count').textContent = 'fetch error';
@@ -639,7 +733,7 @@
     loadGanttEvents();
 
     // ====================================================================
-    //  AI BAR — placeholder submit handler
+    //  AI BAR
     // ====================================================================
     const aiInput = document.getElementById('ai-input');
     const submit  = () => {
