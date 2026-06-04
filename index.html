@@ -67,7 +67,7 @@
     ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.35); }
     * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent; }
 
-    /* --- YouTube background (storm clouds aerial) --- */
+    /* --- YouTube background --- */
     .yt-bg { position: fixed; inset: 0; z-index: -10; overflow: hidden; }
     .yt-bg iframe {
       position: absolute; top: 50%; left: 50%;
@@ -76,8 +76,6 @@
       transform: translate(-50%, -50%);
       pointer-events: none; border: 0;
     }
-
-    /* Subtle rain-streak vignette baked over the video for atmosphere */
     .yt-vignette {
       position: absolute; inset: 0;
       background:
@@ -127,7 +125,7 @@
       text-decoration: line-through; color: var(--text-dim);
     }
 
-    /* --- FullCalendar overrides (ultra-compact) --- */
+    /* --- FullCalendar --- */
     #main-calendar { height: 100%; font-size: 9px; color: var(--text-muted); }
     .fc {
       height: 100% !important;
@@ -178,14 +176,7 @@
     }
     .fc .fc-more-link { font-size: 7px; padding: 0 2px; color: var(--text-dim); }
 
-    /* ====================================================================
-       LINEAR GANTT — restyled to match the reference dashboard image
-       --------------------------------------------------------------------
-       Grid columns: [label] + 37 day-slots = 38 columns.
-       Grid rows: [day-of-week header (10px)] + 12 month rows (1fr each).
-       Each day cell shows the day-number at the top; multi-day bars
-       sit in the lower half so the number stays readable above them.
-       ==================================================================== */
+    /* --- Gantt --- */
     #gantt-container { height: 100%; display: flex; flex-direction: column; }
     .gantt-grid {
       display: grid;
@@ -202,7 +193,6 @@
       line-height: 1;
     }
     .gantt-dow.is-weekend { color: rgba(125, 211, 252, 0.6); }
-
     .gantt-month-label {
       display: flex; align-items: center;
       font-size: 8px; font-weight: 700;
@@ -210,7 +200,6 @@
       text-transform: uppercase; letter-spacing: 0.06em;
       font-family: 'JetBrains Mono', monospace;
     }
-
     .gantt-day {
       background: rgba(255, 255, 255, 0.025);
       border-radius: 1px;
@@ -233,41 +222,25 @@
     }
     .gantt-day.weekend .gantt-day-num { color: rgba(255, 255, 255, 0.78); font-weight: 600; }
     .gantt-day.today .gantt-day-num { color: white; font-weight: 700; }
-    .gantt-day.has-event {
-      /* background-color is set inline from event color */
-      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2) inset;
-    }
+    .gantt-day.has-event { box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2) inset; }
     .gantt-day.has-event .gantt-day-num {
       color: white; font-weight: 700;
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
     }
-    /* Tiny label squeezed to top of cells with single-day events */
     .gantt-day-tag {
       position: absolute;
       top: 0; left: 0; right: 0;
-      font-size: 4.5px;
-      line-height: 1.1;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.7);
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      padding: 0 1px;
-      pointer-events: none;
+      font-size: 4.5px; line-height: 1.1;
+      text-align: center; color: rgba(255, 255, 255, 0.7);
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+      padding: 0 1px; pointer-events: none;
     }
-
-    /* Multi-day bar: anchored to the BOTTOM half of the row so the day
-       numbers above remain visible — matches the screenshot. */
     .gantt-bar {
       border-radius: 1.5px;
-      align-self: end;
-      height: 52%;
-      font-size: 5.5px;
-      padding: 0 3px;
+      align-self: end; height: 52%;
+      font-size: 5.5px; padding: 0 3px;
       color: white;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
       display: flex; align-items: center;
       font-weight: 700;
       font-family: 'Manrope', sans-serif;
@@ -303,14 +276,100 @@
     .ai-bar select option { background: #0f172a; color: white; }
     .ai-bar input { flex: 1; }
     .ai-bar input::placeholder { color: var(--text-dim); }
-    .ai-bar button {
+    .ai-bar button#ai-submit {
       background: var(--accent); border: none;
       width: 28px; height: 28px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: all 0.2s;
       flex-shrink: 0;
     }
-    .ai-bar button:hover { transform: scale(1.06); filter: brightness(1.1); }
+    .ai-bar button#ai-submit:hover { transform: scale(1.06); filter: brightness(1.1); }
+
+    /* ============================================================
+       MUSIC PLAYER — compact glass widget next to the AI bar
+       ============================================================ */
+    .music-player {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 12px;
+      width: 280px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .mp-controls { display: flex; gap: 3px; align-items: center; }
+    .mp-btn {
+      width: 22px; height: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text-bright);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; padding: 0;
+    }
+    .mp-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--border-strong);
+    }
+    .mp-play {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: #0c1426 !important;
+      width: 26px; height: 26px;
+    }
+    .mp-play:hover { filter: brightness(1.1); }
+    .mp-info { flex: 1; min-width: 0; }
+    .mp-meta {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 4px;
+    }
+    .mp-title {
+      flex: 1; min-width: 0;
+      font-size: 10px;
+      color: var(--text-bright);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-weight: 600;
+    }
+    .mp-eq {
+      display: inline-flex; gap: 1.5px; align-items: flex-end;
+      height: 10px; width: 12px; flex-shrink: 0;
+    }
+    .mp-eq span {
+      width: 2px;
+      background: var(--accent);
+      height: 30%;
+      border-radius: 1px;
+      opacity: 0.4;
+    }
+    .music-player.is-playing .mp-eq span {
+      animation: eq-bar 0.9s ease-in-out infinite;
+      opacity: 1;
+    }
+    .music-player.is-playing .mp-eq span:nth-child(2) { animation-delay: 0.15s; }
+    .music-player.is-playing .mp-eq span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes eq-bar {
+      0%, 100% { height: 25%; }
+      50%      { height: 100%; }
+    }
+    .mp-progress {
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .mp-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      border-radius: 1px;
+      transition: width 0.5s linear;
+    }
+    /* Hidden YouTube iframe — must remain in DOM with size > 0 to play */
+    .yt-hidden {
+      position: absolute;
+      top: -200px; left: -200px;
+      width: 1px; height: 1px;
+      opacity: 0; pointer-events: none;
+    }
 
     /* --- Live dot --- */
     @keyframes pulse-dot { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
@@ -325,7 +384,7 @@
   </style>
 </head>
 <body>
-  <!-- ===== YouTube background: aerial storm clouds, looping & muted ===== -->
+  <!-- ===== YouTube background ===== -->
   <div class="yt-bg">
     <iframe
       src="https://www.youtube.com/embed/6jWtghgPbpk?autoplay=1&mute=1&loop=1&playlist=6jWtghgPbpk&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1&start=5"
@@ -380,14 +439,14 @@
 
     <!-- WORKSPACE -->
     <main class="flex-1 flex flex-col gap-3">
-      <!-- Weather -->
+      <!-- Weather (°C) -->
       <section class="glass flex items-center gap-5 fade-in" style="animation-delay: 0.2s">
         <div class="flex items-center gap-3 pr-5 border-r border-white/10">
           <span class="text-4xl leading-none">⛈️</span>
           <div>
             <div class="flex items-baseline gap-1">
-              <span class="text-3xl font-extralight text-white tracking-tight">54</span>
-              <span class="text-[10px] text-white/60">°F</span>
+              <span class="text-3xl font-extralight text-white tracking-tight">12</span>
+              <span class="text-[10px] text-white/60">°C</span>
             </div>
             <div class="text-[9px] text-white/50 font-mono uppercase tracking-widest mt-0.5">
               Humidity 92% · Storm
@@ -399,23 +458,57 @@
 
       <div class="flex-1"></div>
 
-      <!-- AI Command Bar -->
-      <section class="glass ai-bar fade-in" style="animation-delay: 0.3s">
-        <select id="ai-model">
-          <option>Claude</option>
-          <option>Gemini</option>
-          <option>GPT</option>
-        </select>
-        <span class="text-[11px] text-white/20 font-mono">›</span>
-        <input type="text" id="ai-input" placeholder="Ask anything…" autocomplete="off" />
-        <button id="ai-submit" title="Submit">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0c1426"
-               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </button>
-      </section>
+      <!-- Bottom: AI bar + Music player side-by-side -->
+      <div class="flex gap-3 fade-in" style="animation-delay: 0.3s">
+        <!-- AI Command Bar -->
+        <section class="glass ai-bar flex-1">
+          <select id="ai-model">
+            <option>Claude</option>
+            <option>Gemini</option>
+            <option>GPT</option>
+          </select>
+          <span class="text-[11px] text-white/20 font-mono">›</span>
+          <input type="text" id="ai-input" placeholder="Ask anything…" autocomplete="off" />
+          <button id="ai-submit" title="Submit">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0c1426"
+                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </section>
+
+        <!-- YouTube Music Player -->
+        <section class="glass music-player" id="music-player">
+          <div class="mp-controls">
+            <button class="mp-btn" data-action="prev" title="Previous">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+              </svg>
+            </button>
+            <button class="mp-btn mp-play" data-action="play" title="Play / Pause">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+            <button class="mp-btn" data-action="next" title="Next">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="mp-info">
+            <div class="mp-meta">
+              <span class="mp-title">Loading…</span>
+              <span class="mp-eq" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </span>
+            </div>
+            <div class="mp-progress"><div class="mp-progress-fill"></div></div>
+          </div>
+          <div class="yt-hidden"><div id="yt-music-player"></div></div>
+        </section>
+      </div>
     </main>
   </div>
 
@@ -428,19 +521,18 @@
 
     const YEAR        = new Date().getFullYear();
     const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const DAY_LETTERS = ['S','M','T','W','T','F','S'];  // Sun-anchored
+    const DAY_LETTERS = ['S','M','T','W','T','F','S'];
     const DAY_MS      = 86400000;
 
-    // Palette borrowed from the reference: pinks/blues/oranges/teals
     const EVENT_COLORS = [
-      'rgba(236, 72, 153, 0.92)',    // pink — travel
-      'rgba(56, 189, 248, 0.92)',    // sky blue — events
-      'rgba(251, 146, 60, 0.92)',    // orange — short markers
-      'rgba(20, 184, 166, 0.92)',    // teal — holidays
-      'rgba(168, 85, 247, 0.92)',    // purple
-      'rgba(110, 231, 183, 0.92)',   // emerald
-      'rgba(250, 204, 21, 0.92)',    // amber
-      'rgba(248, 113, 113, 0.92)',   // red
+      'rgba(236, 72, 153, 0.92)',
+      'rgba(56, 189, 248, 0.92)',
+      'rgba(251, 146, 60, 0.92)',
+      'rgba(20, 184, 166, 0.92)',
+      'rgba(168, 85, 247, 0.92)',
+      'rgba(110, 231, 183, 0.92)',
+      'rgba(250, 204, 21, 0.92)',
+      'rgba(248, 113, 113, 0.92)',
     ];
 
     // ====================================================================
@@ -455,16 +547,16 @@
     updateTaskCount();
 
     // ====================================================================
-    //  WEATHER (mock — themed to match the stormy backdrop)
+    //  WEATHER — mock 7-day forecast in °C (Munich stormy)
     // ====================================================================
     const forecast = [
-      { day: 'TUE', emoji: '⛈️', high: 56, low: 49 },
-      { day: 'WED', emoji: '🌧️', high: 58, low: 50 },
-      { day: 'THU', emoji: '🌧️', high: 60, low: 52 },
-      { day: 'FRI', emoji: '⛅', high: 64, low: 53 },
-      { day: 'SAT', emoji: '☁️', high: 62, low: 51 },
-      { day: 'SUN', emoji: '🌦️', high: 60, low: 50 },
-      { day: 'MON', emoji: '🌧️', high: 57, low: 49 },
+      { day: 'TUE', emoji: '⛈️', high: 13, low: 9  },
+      { day: 'WED', emoji: '🌧️', high: 14, low: 10 },
+      { day: 'THU', emoji: '🌧️', high: 15, low: 11 },
+      { day: 'FRI', emoji: '⛅',  high: 17, low: 11 },
+      { day: 'SAT', emoji: '☁️', high: 16, low: 10 },
+      { day: 'SUN', emoji: '🌦️', high: 15, low: 10 },
+      { day: 'MON', emoji: '🌧️', high: 13, low: 9  },
     ];
     const fEl = document.getElementById('forecast');
     forecast.forEach(d => {
@@ -507,32 +599,15 @@
     // ====================================================================
     document.getElementById('gantt-year').textContent = YEAR;
 
-    /* ───────────────────────────────────────────────────────────────────
-     * GRID ALIGNMENT — "First Weekend Overlap" logic (unchanged)
-     * ───────────────────────────────────────────────────────────────────
-     * Layout: 38 grid columns total — column 1 is the month label, columns
-     * 2..38 are 37 day-slots. A 31-day month starting on Saturday ends at
-     * column 2 + 6 + 30 = 38, so 37 slots is exactly enough.
-     *
-     * For each month m:
-     *   W = new Date(YEAR, m, 1).getDay()   // 0 = Sun … 6 = Sat
-     *   day D goes in column   2 + W + (D − 1)
-     *
-     * Because the formula is keyed off W, all Sundays land in the same
-     * columns {2, 9, 16, 23, 30, 37}, all Mondays in {3, 10, 17, 24, 31},
-     * etc. → days-of-the-week stack into vertical stripes across all 12
-     * month-rows. We exploit this to draw a SINGLE day-of-week header
-     * (row 1 of the grid) that correctly labels every column for every
-     * month at once.
-     * ─────────────────────────────────────────────────────────────────── */
+    /* "First Weekend Overlap" alignment: 38 columns (1 label + 37 day-slots).
+       Day D in month m with starting weekday W → column 2 + W + (D − 1).
+       All Sundays share columns {2, 9, 16, 23, 30, 37}, all Saturdays {8, 15, 22, 29, 36}, etc. */
     function buildGanttGrid() {
       const grid = document.getElementById('gantt-grid');
       grid.innerHTML = '';
       const today = new Date();
 
-      // Day-of-week header — row 1, columns 2..38.
-      // The pattern "Sun Mon Tue Wed Thu Fri Sat" simply repeats because
-      // of the alignment property above.
+      // Day-of-week header row
       for (let i = 0; i < 37; i++) {
         const dow = document.createElement('div');
         dow.className = 'gantt-dow';
@@ -543,13 +618,11 @@
         grid.appendChild(dow);
       }
 
-      // Month rows (grid rows 2..13)
       for (let m = 0; m < 12; m++) {
-        const startWeekday = new Date(YEAR, m, 1).getDay();      // W
+        const startWeekday = new Date(YEAR, m, 1).getDay();
         const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
-        const gridRow      = m + 2;   // +1 for 1-indexed grid, +1 for header
+        const gridRow      = m + 2;
 
-        // Month label (column 1)
         const label = document.createElement('div');
         label.className = 'gantt-month-label';
         label.style.gridRow    = gridRow;
@@ -557,14 +630,12 @@
         label.textContent = MONTH_NAMES[m];
         grid.appendChild(label);
 
-        // Day cells
         for (let d = 1; d <= daysInMonth; d++) {
           const cell = document.createElement('div');
           cell.className = 'gantt-day';
 
           const dow = (startWeekday + d - 1) % 7;
           if (dow === 0 || dow === 6) cell.classList.add('weekend');
-
           if (
             today.getFullYear() === YEAR &&
             today.getMonth()    === m   &&
@@ -572,7 +643,7 @@
           ) cell.classList.add('today');
 
           cell.style.gridRow    = gridRow;
-          cell.style.gridColumn = 2 + startWeekday + (d - 1);   // ← the formula
+          cell.style.gridColumn = 2 + startWeekday + (d - 1);
           cell.dataset.date     = `${YEAR}-${m}-${d}`;
 
           const num = document.createElement('span');
@@ -584,8 +655,6 @@
       }
     }
 
-    /** Normalize a Google Calendar event payload. Handles both all-day
-     *  (start.date, end.date EXCLUSIVE) and timed (start.dateTime) events. */
     function parseEvent(raw) {
       let start, end, durationDays;
       if (raw.start.date) {
@@ -601,57 +670,31 @@
       return { id: raw.id, title: raw.summary || 'Untitled', start, end, durationDays };
     }
 
-    /* ───────────────────────────────────────────────────────────────────
-     * FILTERING & HIERARCHY — "Overarching Event" logic (unchanged)
-     * ───────────────────────────────────────────────────────────────────
-     * Applies ONLY to multi-day events (> 1 day). For the new reference
-     * design, single-day events are *also* shown (as filled cells) — they
-     * are not subject to this filter.
-     *
-     * Multi-day filter steps:
-     *  1. Keep only events with durationDays > 1.
-     *  2. Sort by duration DESCENDING.
-     *  3. Greedy accept events that do not overlap any already-kept
-     *     (longer-or-equal) event. Because we process longest-first, any
-     *     conflict is by construction shorter and gets dropped — the
-     *     "China Trip beats Hotel Beijing" rule emerges for free.
-     *
-     * Overlap test for closed intervals [a1,a2] and [b1,b2]:
-     *     a1 ≤ b2  AND  a2 ≥ b1
-     * ─────────────────────────────────────────────────────────────────── */
+    /* Overarching-event filter: keep only multi-day events, then greedy-accept
+       longest-first. Single-day events bypass this and render as colored cells. */
     function filterAndPrioritize(events) {
       const multiDay = events.filter(e => e.durationDays > 1);
       multiDay.sort((a, b) => b.durationDays - a.durationDays);
-
       const kept = [];
       for (const ev of multiDay) {
-        const overlapsLonger = kept.some(k =>
-          ev.start <= k.end && ev.end >= k.start
-        );
+        const overlapsLonger = kept.some(k => ev.start <= k.end && ev.end >= k.start);
         if (!overlapsLonger) kept.push(ev);
       }
-
       kept.sort((a, b) => a.start - b.start);
       kept.forEach((e, i) => (e.color = EVENT_COLORS[i % EVENT_COLORS.length]));
       return kept;
     }
 
-    /** Paint single-day events as colored cell backgrounds with a small
-     *  label squeezed to the top of the cell (matching the reference). */
     function applySingleDayEvents(events) {
-      // Stable colors keyed by month so a row's events vary visually.
       events
         .filter(e => e.durationDays <= 1 && e.start.getFullYear() === YEAR)
         .forEach((ev, i) => {
           const key  = `${YEAR}-${ev.start.getMonth()}-${ev.start.getDate()}`;
           const cell = document.querySelector(`.gantt-day[data-date="${key}"]`);
           if (!cell) return;
-          const color = EVENT_COLORS[(i + 2) % EVENT_COLORS.length];
-          cell.style.background = color;
+          cell.style.background = EVENT_COLORS[(i + 2) % EVENT_COLORS.length];
           cell.classList.add('has-event');
           cell.title = `${ev.title} · ${ev.start.toLocaleDateString()}`;
-
-          // Add label tag at the top, if there's space
           const tag = document.createElement('span');
           tag.className = 'gantt-day-tag';
           tag.textContent = ev.title;
@@ -659,9 +702,6 @@
         });
     }
 
-    /** Place a colored bar for `event` on the row for month `m`, clipped
-     *  to that month's days. Bars span columns and sit in the lower half
-     *  of the row so day numbers above remain visible. */
     function placeBarForMonth(event, m) {
       const startWeekday = new Date(YEAR, m, 1).getDay();
       const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
@@ -673,13 +713,12 @@
 
       const d1 = barStart.getDate();
       const d2 = barEnd.getDate();
-
       const colStart = 2 + startWeekday + (d1 - 1);
-      const colEnd   = 2 + startWeekday + d2;     // exclusive line index
+      const colEnd   = 2 + startWeekday + d2;
 
       const bar = document.createElement('div');
       bar.className = 'gantt-bar';
-      bar.style.gridRow    = m + 2;                // +1 for 1-index, +1 for header row
+      bar.style.gridRow    = m + 2;
       bar.style.gridColumn = `${colStart} / ${colEnd}`;
       bar.style.background = event.color;
       bar.title = `${event.title} · ${event.start.toLocaleDateString()} → ${event.end.toLocaleDateString()} (${event.durationDays}d)`;
@@ -697,31 +736,24 @@
 
     async function loadGanttEvents() {
       buildGanttGrid();
-
       if (GOOGLE_CALENDAR_API_KEY.startsWith('YOUR_') || GOOGLE_CALENDAR_ID.startsWith('YOUR_')) {
         document.getElementById('gantt-count').textContent = 'add API key';
         return;
       }
-
       const url =
         `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events` +
         `?key=${GOOGLE_CALENDAR_API_KEY}` +
         `&timeMin=${YEAR}-01-01T00:00:00Z` +
         `&timeMax=${YEAR}-12-31T23:59:59Z` +
         `&singleEvents=true&maxResults=2500&orderBy=startTime`;
-
       try {
         const res    = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data   = await res.json();
         const parsed = (data.items || []).map(parseEvent);
-
-        // Multi-day → filtered overarching bars.
-        // Single-day → colored cells (NEW: no longer discarded).
         const multiDay = filterAndPrioritize(parsed);
         applySingleDayEvents(parsed);
         renderMultiDay(multiDay);
-
         const singleCount = parsed.filter(e => e.durationDays <= 1).length;
         document.getElementById('gantt-count').textContent =
           `${multiDay.length} trips · ${singleCount} days`;
@@ -744,6 +776,100 @@
     };
     document.getElementById('ai-submit').addEventListener('click', submit);
     aiInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+
+    // ====================================================================
+    //  YOUTUBE MUSIC PLAYER
+    //  Uses the official YouTube IFrame Player API. The iframe lives in a
+    //  hidden 1×1 container (positioned off-screen) so we can drive it with
+    //  custom buttons while only audio reaches the user.
+    //
+    //  → Swap out MUSIC_TRACKS with your own video / mix IDs.
+    // ====================================================================
+    const MUSIC_TRACKS = [
+      { id: 'jfKfPfyJRdk', title: 'Lofi Girl · Beats to Relax / Study' },
+      { id: '6jWtghgPbpk', title: 'Storm Clouds Ambience' },
+      { id: 'DWcJFNfaw9c', title: 'Chillhop Radio' },
+      { id: '4xDzrJKXOOY', title: 'Deep Focus · Ambient' },
+    ];
+
+    let ytPlayer    = null;
+    let trackIndex  = 0;
+    const playerEl  = document.getElementById('music-player');
+    const titleEl   = playerEl.querySelector('.mp-title');
+    const progressEl= playerEl.querySelector('.mp-progress-fill');
+    const playBtnEl = playerEl.querySelector('.mp-play');
+
+    const ICON_PLAY  = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    const ICON_PAUSE = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
+
+    function setPlayingUI(playing) {
+      playerEl.classList.toggle('is-playing', playing);
+      playBtnEl.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+    }
+    function setTrackUI() {
+      titleEl.textContent = MUSIC_TRACKS[trackIndex].title;
+      progressEl.style.width = '0%';
+    }
+
+    // Inject the YouTube IFrame API script
+    (function loadYouTubeAPI() {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    })();
+
+    // The API calls this global once ready
+    window.onYouTubeIframeAPIReady = function () {
+      ytPlayer = new YT.Player('yt-music-player', {
+        height: '1',
+        width:  '1',
+        videoId: MUSIC_TRACKS[trackIndex].id,
+        playerVars: {
+          autoplay: 0, controls: 0, disablekb: 1,
+          modestbranding: 1, rel: 0, playsinline: 1, iv_load_policy: 3,
+        },
+        events: {
+          onReady: () => {
+            setTrackUI();
+            setInterval(updateMusicProgress, 800);
+          },
+          onStateChange: (e) => {
+            // 1 = playing, 2 = paused, 0 = ended
+            if (e.data === 1) setPlayingUI(true);
+            else if (e.data === 2) setPlayingUI(false);
+            else if (e.data === 0) musicNext();
+          },
+        },
+      });
+    };
+
+    function updateMusicProgress() {
+      if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+      try {
+        const curr = ytPlayer.getCurrentTime();
+        const dur  = ytPlayer.getDuration();
+        if (dur > 0) progressEl.style.width = ((curr / dur) * 100) + '%';
+      } catch (_) {}
+    }
+    function musicToggle() {
+      if (!ytPlayer || !ytPlayer.getPlayerState) return;
+      ytPlayer.getPlayerState() === 1 ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+    }
+    function musicNext() {
+      if (!ytPlayer) return;
+      trackIndex = (trackIndex + 1) % MUSIC_TRACKS.length;
+      ytPlayer.loadVideoById(MUSIC_TRACKS[trackIndex].id);
+      setTrackUI();
+    }
+    function musicPrev() {
+      if (!ytPlayer) return;
+      trackIndex = (trackIndex - 1 + MUSIC_TRACKS.length) % MUSIC_TRACKS.length;
+      ytPlayer.loadVideoById(MUSIC_TRACKS[trackIndex].id);
+      setTrackUI();
+    }
+    playerEl.querySelector('[data-action="prev"]').addEventListener('click', musicPrev);
+    playerEl.querySelector('[data-action="play"]').addEventListener('click', musicToggle);
+    playerEl.querySelector('[data-action="next"]').addEventListener('click', musicNext);
   </script>
 </body>
 </html>
