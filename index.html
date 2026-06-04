@@ -5,17 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compact Dashboard · Storm</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google API Client (gapi) -->
   <script src="https://apis.google.com/js/api.js"></script>
-
-  <!-- FullCalendar + Google Calendar plugin -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js"></script>
 
-  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -35,8 +29,8 @@
 
     * { box-sizing: border-box; }
 
-    html { background: #020617; }   /* root canvas fallback */
-
+    /* Dark fallback lives on <html> only, so the negative-z iframe shows through */
+    html { background: #020617; }
     html, body {
       margin: 0; padding: 0;
       width: 100vw; height: 100vh;
@@ -61,27 +55,21 @@
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px -10px rgba(0, 0, 0, 0.6);
     }
 
-    /* --- 2px scrollbars --- */
     ::-webkit-scrollbar { width: 2px; height: 2px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.35); }
     * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent; }
 
-    /* --- YouTube background --- */
+    /* --- Background video --- */
     .yt-bg { position: fixed; inset: 0; z-index: -10; overflow: hidden; }
-    .yt-bg iframe {
+    .yt-bg iframe, .yt-bg video {
       position: absolute; top: 50%; left: 50%;
       width: 177.77vh; height: 56.25vw;
       min-width: 100vw; min-height: 100vh;
       transform: translate(-50%, -50%);
       pointer-events: none; border: 0;
-    }
-    .yt-vignette {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse at 50% 30%, rgba(2,6,23,0) 0%, rgba(2,6,23,0.55) 100%),
-        linear-gradient(180deg, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.7) 100%);
+      object-fit: cover;
     }
 
     /* --- Panel headers --- */
@@ -177,7 +165,7 @@
     }
     .fc .fc-more-link { font-size: 7px; padding: 0 2px; color: var(--text-dim); }
 
-    /* --- Gantt --- */
+    /* --- Gantt: no day numbers, full-height bars --- */
     #gantt-container { height: 100%; display: flex; flex-direction: column; }
     .gantt-grid {
       display: grid;
@@ -202,53 +190,70 @@
       font-family: 'JetBrains Mono', monospace;
     }
     .gantt-day {
-      background: rgba(255, 255, 255, 0.025);
+      background: rgba(255, 255, 255, 0.03);
       border-radius: 1px;
       min-height: 0;
-      display: flex; align-items: flex-start; justify-content: center;
-      padding-top: 1px;
-      position: relative; overflow: hidden;
+      position: relative;
     }
-    .gantt-day.weekend { background: rgba(255, 255, 255, 0.06); }
+    .gantt-day.weekend { background: rgba(255, 255, 255, 0.07); }
     .gantt-day.today {
-      background: rgba(125, 211, 252, 0.35);
+      background: rgba(125, 211, 252, 0.4);
       box-shadow: 0 0 0 1px var(--accent);
     }
-    .gantt-day-num {
-      font-size: 6.5px;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(255, 255, 255, 0.55);
-      font-weight: 500; line-height: 1;
-      pointer-events: none;
+    .gantt-day.has-event {
+      cursor: pointer;
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2) inset;
+      transition: filter 0.15s;
     }
-    .gantt-day.weekend .gantt-day-num { color: rgba(255, 255, 255, 0.78); font-weight: 600; }
-    .gantt-day.today .gantt-day-num { color: white; font-weight: 700; }
-    .gantt-day.has-event { box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2) inset; }
-    .gantt-day.has-event .gantt-day-num {
-      color: white; font-weight: 700;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
-    }
-    .gantt-day-tag {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      font-size: 4.5px; line-height: 1.1;
-      text-align: center; color: rgba(255, 255, 255, 0.7);
-      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-      padding: 0 1px; pointer-events: none;
-    }
+    .gantt-day.has-event:hover { filter: brightness(1.15); }
     .gantt-bar {
-      border-radius: 1.5px;
-      align-self: end; height: 52%;
-      font-size: 5.5px; padding: 0 3px;
+      border-radius: 2px;
+      align-self: stretch;
+      font-size: 6px;
+      padding: 0 4px;
       color: white;
       overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
       display: flex; align-items: center;
       font-weight: 700;
       font-family: 'Manrope', sans-serif;
-      margin-bottom: 1px;
       letter-spacing: 0.03em;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: filter 0.15s;
+    }
+    .gantt-bar:hover { filter: brightness(1.2); z-index: 2; }
+
+    /* --- Custom tooltip (in <body>, escapes panel overflow) --- */
+    #gantt-tooltip {
+      position: fixed;
+      background: rgba(2, 6, 23, 0.96);
+      border: 1px solid var(--border-strong);
+      color: white;
+      padding: 7px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 9999;
+      backdrop-filter: blur(20px);
+      font-family: 'Manrope', sans-serif;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.12s;
+      max-width: 240px;
+    }
+    #gantt-tooltip.show { opacity: 1; }
+    .tt-title {
+      font-size: 11px; font-weight: 700; color: white;
+      margin-bottom: 3px; line-height: 1.2;
+    }
+    .tt-date {
+      font-size: 9px; color: rgba(255,255,255,0.7);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .tt-cat {
+      font-size: 8px; margin-top: 4px;
+      text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;
+      display: inline-block; padding: 1px 5px; border-radius: 3px;
     }
 
     /* --- Weather --- */
@@ -286,13 +291,11 @@
     }
     .ai-bar button#ai-submit:hover { transform: scale(1.06); filter: brightness(1.1); }
 
-    /* ============================================================
-       MUSIC PLAYER — compact glass widget next to the AI bar
-       ============================================================ */
+    /* --- Music player --- */
     .music-player {
       display: flex; align-items: center; gap: 10px;
       padding: 6px 12px;
-      width: 280px;
+      width: 320px;
       flex-shrink: 0;
       position: relative;
     }
@@ -310,6 +313,11 @@
     .mp-btn:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: var(--border-strong);
+    }
+    .mp-btn.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0c1426;
     }
     .mp-play {
       background: var(--accent) !important;
@@ -335,11 +343,8 @@
       height: 10px; width: 12px; flex-shrink: 0;
     }
     .mp-eq span {
-      width: 2px;
-      background: var(--accent);
-      height: 30%;
-      border-radius: 1px;
-      opacity: 0.4;
+      width: 2px; background: var(--accent);
+      height: 30%; border-radius: 1px; opacity: 0.4;
     }
     .music-player.is-playing .mp-eq span {
       animation: eq-bar 0.9s ease-in-out infinite;
@@ -349,22 +354,17 @@
     .music-player.is-playing .mp-eq span:nth-child(3) { animation-delay: 0.3s; }
     @keyframes eq-bar {
       0%, 100% { height: 25%; }
-      50%      { height: 100%; }
+      50% { height: 100%; }
     }
     .mp-progress {
-      height: 2px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 1px;
-      overflow: hidden;
+      height: 2px; background: rgba(255, 255, 255, 0.08);
+      border-radius: 1px; overflow: hidden;
     }
     .mp-progress-fill {
-      height: 100%;
-      background: var(--accent);
-      width: 0%;
-      border-radius: 1px;
+      height: 100%; background: var(--accent);
+      width: 0%; border-radius: 1px;
       transition: width 0.5s linear;
     }
-    /* Hidden YouTube iframe — must remain in DOM with size > 0 to play */
     .yt-hidden {
       position: absolute;
       top: -200px; left: -200px;
@@ -372,11 +372,79 @@
       opacity: 0; pointer-events: none;
     }
 
-    /* --- Live dot --- */
+    /* --- Music search popover --- */
+    .mp-search-popover {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      right: 0;
+      width: 360px;
+      background: rgba(2, 6, 23, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 8px;
+      z-index: 50;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mp-search-popover.is-open { display: flex; }
+    .mp-search-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 6px 8px;
+      font-size: 11px;
+      color: var(--text-bright);
+      font-family: 'Manrope', sans-serif;
+      outline: none;
+    }
+    .mp-search-input:focus { border-color: var(--accent); }
+    .mp-search-input::placeholder { color: var(--text-dim); }
+    .mp-search-hint {
+      font-size: 8px; color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+      padding: 0 2px;
+    }
+    .mp-search-results {
+      display: flex; flex-direction: column; gap: 3px;
+      max-height: 280px; overflow-y: auto;
+    }
+    .mp-result {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 4px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .mp-result:hover { background: rgba(255, 255, 255, 0.06); }
+    .mp-result img {
+      width: 50px; height: 38px;
+      border-radius: 3px; object-fit: cover;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.05);
+    }
+    .mp-result-meta { flex: 1; min-width: 0; }
+    .mp-result-title {
+      font-size: 10px; color: var(--text-bright);
+      line-height: 1.25;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-weight: 500;
+    }
+    .mp-result-channel {
+      font-size: 8px; color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
     @keyframes pulse-dot { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
     .live-dot { animation: pulse-dot 1.8s infinite; }
 
-    /* --- Reveal --- */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -385,22 +453,30 @@
   </style>
 </head>
 <body>
-  <!-- ===== YouTube background ===== -->
+  <!-- ===== Background ===== -->
+  <!-- Option A: YouTube iframe (default). Works without hosting a video file. -->
   <div class="yt-bg">
-  <iframe
-  src="https://www.youtube.com/embed/AIjwrIdtlRg?autoplay=1&mute=1&loop=1&playlist=AIjwrIdtlRg&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
-  allow="autoplay; encrypted-media"
-  title="background"
-></iframe>
-    <div class="yt-vignette"></div>
-    <div class="absolute inset-0 bg-slate-950/70"></div>
+    <iframe
+      src="https://www.youtube.com/embed/AIjwrIdtlRg?autoplay=1&mute=1&loop=1&playlist=AIjwrIdtlRg&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
+      allow="autoplay; encrypted-media"
+      title="background"
+    ></iframe>
   </div>
+
+  <!--
+  Option B: smoother <video> alternative. To use it, comment out the .yt-bg
+  block above and uncomment this one. Drop an MP4 next to index.html, or
+  point src= at a hosted file (Pexels and Pixabay have free 4K storm-clouds
+  videos you can download).
+
+  <div class="yt-bg">
+    <video src="storm.mp4" autoplay muted loop playsinline></video>
+  </div>
+  -->
 
   <!-- ===== Layout ===== -->
   <div class="flex h-screen w-screen overflow-hidden p-3 gap-3 relative">
-    <!-- LEFT SIDEBAR -->
     <aside class="w-[300px] grid gap-3 grid-rows-[15fr_45fr_40fr]">
-      <!-- Tasks -->
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.05s">
         <div class="panel-header">
           <span class="panel-title">Tasks</span>
@@ -415,7 +491,6 @@
         </div>
       </section>
 
-      <!-- Main Calendar -->
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.1s">
         <div class="panel-header">
           <span class="panel-title">Calendar</span>
@@ -426,7 +501,6 @@
         </div>
       </section>
 
-      <!-- Linear Gantt -->
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.15s">
         <div class="panel-header">
           <span class="panel-title">Year Overview · <span id="gantt-year"></span></span>
@@ -438,9 +512,7 @@
       </section>
     </aside>
 
-    <!-- WORKSPACE -->
     <main class="flex-1 flex flex-col gap-3">
-      <!-- Weather (°C) -->
       <section class="glass flex items-center gap-5 fade-in" style="animation-delay: 0.2s">
         <div class="flex items-center gap-3 pr-5 border-r border-white/10">
           <span class="text-4xl leading-none">⛈️</span>
@@ -459,9 +531,7 @@
 
       <div class="flex-1"></div>
 
-      <!-- Bottom: AI bar + Music player side-by-side -->
       <div class="flex gap-3 fade-in" style="animation-delay: 0.3s">
-        <!-- AI Command Bar -->
         <section class="glass ai-bar flex-1">
           <select id="ai-model">
             <option>Claude</option>
@@ -479,66 +549,86 @@
           </button>
         </section>
 
-        <!-- YouTube Music Player -->
         <section class="glass music-player" id="music-player">
           <div class="mp-controls">
             <button class="mp-btn" data-action="prev" title="Previous">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-              </svg>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
             </button>
             <button class="mp-btn mp-play" data-action="play" title="Play / Pause">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
             <button class="mp-btn" data-action="next" title="Next">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+            <button class="mp-btn" data-action="search" title="Search YouTube">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
             </button>
           </div>
           <div class="mp-info">
             <div class="mp-meta">
               <span class="mp-title">Loading…</span>
-              <span class="mp-eq" aria-hidden="true">
-                <span></span><span></span><span></span>
-              </span>
+              <span class="mp-eq" aria-hidden="true"><span></span><span></span><span></span></span>
             </div>
             <div class="mp-progress"><div class="mp-progress-fill"></div></div>
           </div>
+
+          <!-- Search popover -->
+          <div class="mp-search-popover" id="mp-search-popover">
+            <input type="text" class="mp-search-input" id="mp-search-input"
+                   placeholder="Search YouTube or paste a URL / video ID…" autocomplete="off" />
+            <div class="mp-search-hint" id="mp-search-hint">Press Enter to search · Paste a URL to load directly</div>
+            <div class="mp-search-results" id="mp-search-results"></div>
+          </div>
+
           <div class="yt-hidden"><div id="yt-music-player"></div></div>
         </section>
       </div>
     </main>
   </div>
 
+  <!-- Floating tooltip (lives in body so it isn't clipped by panel overflow) -->
+  <div id="gantt-tooltip" role="tooltip"></div>
+
   <script>
-    // ====================================================================
+    // =========================================================================
     //  CONFIG
-    // ====================================================================
-    const GOOGLE_CALENDAR_API_KEY = 'AIzaSyDZl2AX_u6E7a30670FbrxZjh9U_XDxSwY';
-    const GOOGLE_CALENDAR_ID       = '026eaba252985e266f832cf7a28b84dbf6a796617a3310901789f2355cb53dd4@group.calendar.google.com';
+    // =========================================================================
+    const GOOGLE_API_KEY = 'AIzaSyDZl2AX_u6E7a30670FbrxZjh9U_XDxSwY';
+  
+    /*
+     * CALENDARS — each entry is one Google Calendar = one category.
+     *
+     * Recommended workflow:
+     *   1. In Google Calendar, create one calendar per category
+     *      (e.g. "Travel", "Work", "Personal", "Health").
+     *   2. Make each one public (Settings → Access permissions →
+     *      "Make available to public" → "See all event details").
+     *   3. Copy the Calendar ID (Settings → Integrate calendar)
+     *      into the `id` field below and pick a color.
+     *
+     * Drop entries you don't need. Add more if you want.
+     */
+    const CALENDARS = [
+      { id: 'YOUR_TRAVEL_CAL@group.calendar.google.com',   name: 'Travel',   color: 'rgba(168, 85, 247, 0.92)' }, // purple
+      { id: 'YOUR_WORK_CAL@group.calendar.google.com',     name: 'Work',     color: 'rgba(56, 189, 248, 0.92)' }, // blue
+      { id: 'YOUR_PERSONAL_CAL@group.calendar.google.com', name: 'Personal', color: 'rgba(110, 231, 183, 0.92)' },// emerald
+      { id: 'YOUR_HEALTH_CAL@group.calendar.google.com',   name: 'Health',   color: 'rgba(244, 114, 182, 0.92)' },// pink
+    ];
 
     const YEAR        = new Date().getFullYear();
     const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const DAY_LETTERS = ['S','M','T','W','T','F','S'];
     const DAY_MS      = 86400000;
+    const FALLBACK_COLOR = 'rgba(125, 211, 252, 0.92)';
 
-    const EVENT_COLORS = [
-      'rgba(236, 72, 153, 0.92)',
-      'rgba(56, 189, 248, 0.92)',
-      'rgba(251, 146, 60, 0.92)',
-      'rgba(20, 184, 166, 0.92)',
-      'rgba(168, 85, 247, 0.92)',
-      'rgba(110, 231, 183, 0.92)',
-      'rgba(250, 204, 21, 0.92)',
-      'rgba(248, 113, 113, 0.92)',
-    ];
+    // Only fetch real (non-placeholder) calendars
+    const ACTIVE_CALENDARS = CALENDARS.filter(c => !c.id.startsWith('YOUR_'));
 
-    // ====================================================================
-    //  TASKS counter
-    // ====================================================================
+    // =========================================================================
+    //  TASKS
+    // =========================================================================
     const updateTaskCount = () => {
       const all  = document.querySelectorAll('#task-list input[type="checkbox"]');
       const done = document.querySelectorAll('#task-list input[type="checkbox"]:checked');
@@ -547,9 +637,9 @@
     document.querySelectorAll('#task-list input').forEach(el => el.addEventListener('change', updateTaskCount));
     updateTaskCount();
 
-    // ====================================================================
-    //  WEATHER — mock 7-day forecast in °C (Munich stormy)
-    // ====================================================================
+    // =========================================================================
+    //  WEATHER (mock, °C)
+    // =========================================================================
     const forecast = [
       { day: 'TUE', emoji: '⛈️', high: 13, low: 9  },
       { day: 'WED', emoji: '🌧️', high: 14, low: 10 },
@@ -573,14 +663,18 @@
       fEl.appendChild(div);
     });
 
-    // ====================================================================
-    //  FULLCALENDAR
-    // ====================================================================
+    // =========================================================================
+    //  FULLCALENDAR — multiple sources, one per category
+    // =========================================================================
     document.addEventListener('DOMContentLoaded', () => {
       const calendar = new FullCalendar.Calendar(document.getElementById('main-calendar'), {
         initialView: 'dayGridMonth',
-        googleCalendarApiKey: GOOGLE_CALENDAR_API_KEY,
-        events: { googleCalendarId: GOOGLE_CALENDAR_ID },
+        googleCalendarApiKey: GOOGLE_API_KEY,
+        eventSources: ACTIVE_CALENDARS.map(c => ({
+          googleCalendarId: c.id,
+          color: c.color,
+          textColor: 'white',
+        })),
         height: '100%',
         headerToolbar: { left: 'prev', center: 'title', right: 'next' },
         titleFormat:    { year: 'numeric', month: 'short' },
@@ -595,14 +689,11 @@
       calendar.render();
     });
 
-    // ====================================================================
+    // =========================================================================
     //  LINEAR GANTT
-    // ====================================================================
+    // =========================================================================
     document.getElementById('gantt-year').textContent = YEAR;
 
-    /* "First Weekend Overlap" alignment: 38 columns (1 label + 37 day-slots).
-       Day D in month m with starting weekday W → column 2 + W + (D − 1).
-       All Sundays share columns {2, 9, 16, 23, 30, 37}, all Saturdays {8, 15, 22, 29, 36}, etc. */
     function buildGanttGrid() {
       const grid = document.getElementById('gantt-grid');
       grid.innerHTML = '';
@@ -634,7 +725,6 @@
         for (let d = 1; d <= daysInMonth; d++) {
           const cell = document.createElement('div');
           cell.className = 'gantt-day';
-
           const dow = (startWeekday + d - 1) % 7;
           if (dow === 0 || dow === 6) cell.classList.add('weekend');
           if (
@@ -642,21 +732,15 @@
             today.getMonth()    === m   &&
             today.getDate()     === d
           ) cell.classList.add('today');
-
           cell.style.gridRow    = gridRow;
           cell.style.gridColumn = 2 + startWeekday + (d - 1);
           cell.dataset.date     = `${YEAR}-${m}-${d}`;
-
-          const num = document.createElement('span');
-          num.className = 'gantt-day-num';
-          num.textContent = d;
-          cell.appendChild(num);
           grid.appendChild(cell);
         }
       }
     }
 
-    function parseEvent(raw) {
+    function parseEvent(raw, category) {
       let start, end, durationDays;
       if (raw.start.date) {
         start = new Date(raw.start.date + 'T00:00:00');
@@ -668,11 +752,17 @@
         end   = new Date(raw.end.dateTime);
         durationDays = (end - start) / DAY_MS;
       }
-      return { id: raw.id, title: raw.summary || 'Untitled', start, end, durationDays };
+      return {
+        id: raw.id,
+        title: raw.summary || 'Untitled',
+        start, end, durationDays,
+        category: category.name,
+        color: category.color,
+      };
     }
 
     /* Overarching-event filter: keep only multi-day events, then greedy-accept
-       longest-first. Single-day events bypass this and render as colored cells. */
+       longest-first. Overlap criterion: a.start ≤ b.end AND a.end ≥ b.start. */
     function filterAndPrioritize(events) {
       const multiDay = events.filter(e => e.durationDays > 1);
       multiDay.sort((a, b) => b.durationDays - a.durationDays);
@@ -682,24 +772,31 @@
         if (!overlapsLonger) kept.push(ev);
       }
       kept.sort((a, b) => a.start - b.start);
-      kept.forEach((e, i) => (e.color = EVENT_COLORS[i % EVENT_COLORS.length]));
       return kept;
+    }
+
+    function fmtDate(d) {
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+    function tooltipDataset(el, ev) {
+      el.dataset.eventTitle = ev.title;
+      el.dataset.eventStart = fmtDate(ev.start);
+      el.dataset.eventEnd   = fmtDate(ev.end);
+      el.dataset.eventDuration = Math.max(1, Math.round(ev.durationDays));
+      el.dataset.eventCategory = ev.category || '';
+      el.dataset.eventColor    = ev.color || '';
     }
 
     function applySingleDayEvents(events) {
       events
         .filter(e => e.durationDays <= 1 && e.start.getFullYear() === YEAR)
-        .forEach((ev, i) => {
+        .forEach(ev => {
           const key  = `${YEAR}-${ev.start.getMonth()}-${ev.start.getDate()}`;
           const cell = document.querySelector(`.gantt-day[data-date="${key}"]`);
           if (!cell) return;
-          cell.style.background = EVENT_COLORS[(i + 2) % EVENT_COLORS.length];
+          cell.style.background = ev.color;
           cell.classList.add('has-event');
-          cell.title = `${ev.title} · ${ev.start.toLocaleDateString()}`;
-          const tag = document.createElement('span');
-          tag.className = 'gantt-day-tag';
-          tag.textContent = ev.title;
-          cell.insertBefore(tag, cell.firstChild);
+          tooltipDataset(cell, ev);
         });
     }
 
@@ -708,10 +805,8 @@
       const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
       const monthStart   = new Date(YEAR, m, 1);
       const monthEnd     = new Date(YEAR, m, daysInMonth);
-
       const barStart = event.start > monthStart ? event.start : monthStart;
       const barEnd   = event.end   < monthEnd   ? event.end   : monthEnd;
-
       const d1 = barStart.getDate();
       const d2 = barEnd.getDate();
       const colStart = 2 + startWeekday + (d1 - 1);
@@ -722,8 +817,8 @@
       bar.style.gridRow    = m + 2;
       bar.style.gridColumn = `${colStart} / ${colEnd}`;
       bar.style.background = event.color;
-      bar.title = `${event.title} · ${event.start.toLocaleDateString()} → ${event.end.toLocaleDateString()} (${event.durationDays}d)`;
       bar.textContent = event.title;
+      tooltipDataset(bar, event);
       document.getElementById('gantt-grid').appendChild(bar);
     }
 
@@ -735,29 +830,37 @@
       }
     }
 
-    async function loadGanttEvents() {
-      buildGanttGrid();
-      if (GOOGLE_CALENDAR_API_KEY.startsWith('YOUR_') || GOOGLE_CALENDAR_ID.startsWith('YOUR_')) {
-        document.getElementById('gantt-count').textContent = 'add API key';
-        return;
-      }
+    async function fetchOneCalendar(cal) {
       const url =
-        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events` +
-        `?key=${GOOGLE_CALENDAR_API_KEY}` +
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cal.id)}/events` +
+        `?key=${GOOGLE_API_KEY}` +
         `&timeMin=${YEAR}-01-01T00:00:00Z` +
         `&timeMax=${YEAR}-12-31T23:59:59Z` +
         `&singleEvents=true&maxResults=2500&orderBy=startTime`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`${cal.name}: HTTP ${res.status}`);
+      const data = await res.json();
+      return (data.items || []).map(raw => parseEvent(raw, cal));
+    }
+
+    async function loadGanttEvents() {
+      buildGanttGrid();
+
+      if (GOOGLE_API_KEY.startsWith('YOUR_') || ACTIVE_CALENDARS.length === 0) {
+        document.getElementById('gantt-count').textContent = 'add API key + calendar';
+        return;
+      }
+
       try {
-        const res    = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data   = await res.json();
-        const parsed = (data.items || []).map(parseEvent);
+        // Fetch every calendar in parallel
+        const perCal = await Promise.all(ACTIVE_CALENDARS.map(fetchOneCalendar));
+        const parsed = perCal.flat();
         const multiDay = filterAndPrioritize(parsed);
         applySingleDayEvents(parsed);
         renderMultiDay(multiDay);
-        const singleCount = parsed.filter(e => e.durationDays <= 1).length;
+        const single = parsed.filter(e => e.durationDays <= 1).length;
         document.getElementById('gantt-count').textContent =
-          `${multiDay.length} trips · ${singleCount} days`;
+          `${multiDay.length} trips · ${single} days · ${ACTIVE_CALENDARS.length} cats`;
       } catch (err) {
         console.error('Gantt fetch failed:', err);
         document.getElementById('gantt-count').textContent = 'fetch error';
@@ -765,32 +868,73 @@
     }
     loadGanttEvents();
 
-    // ====================================================================
+    // =========================================================================
+    //  CUSTOM TOOLTIP for Gantt hover (in body, escapes overflow:hidden)
+    // =========================================================================
+    (function setupTooltip() {
+      const tt = document.getElementById('gantt-tooltip');
+      const grid = document.getElementById('gantt-grid');
+
+      grid.addEventListener('mouseover', (e) => {
+        const tgt = e.target.closest('[data-event-title]');
+        if (!tgt) return;
+        const title = tgt.dataset.eventTitle;
+        const start = tgt.dataset.eventStart;
+        const end   = tgt.dataset.eventEnd;
+        const dur   = parseInt(tgt.dataset.eventDuration, 10);
+        const cat   = tgt.dataset.eventCategory;
+        const col   = tgt.dataset.eventColor;
+        const dateLine = (start === end)
+          ? start
+          : `${start} → ${end} · ${dur}d`;
+        tt.innerHTML =
+          `<div class="tt-title">${title}</div>` +
+          `<div class="tt-date">${dateLine}</div>` +
+          (cat ? `<div class="tt-cat" style="background:${col}">${cat}</div>` : '');
+        tt.classList.add('show');
+      });
+
+      grid.addEventListener('mousemove', (e) => {
+        if (!tt.classList.contains('show')) return;
+        // Position to the right of cursor, flipped if it would go off-screen
+        const pad = 14;
+        let x = e.clientX + pad;
+        let y = e.clientY + pad;
+        const r = tt.getBoundingClientRect();
+        if (x + r.width  > window.innerWidth)  x = e.clientX - r.width  - pad;
+        if (y + r.height > window.innerHeight) y = e.clientY - r.height - pad;
+        tt.style.left = x + 'px';
+        tt.style.top  = y + 'px';
+      });
+
+      grid.addEventListener('mouseleave', () => tt.classList.remove('show'));
+      grid.addEventListener('mouseout', (e) => {
+        if (!e.relatedTarget || !grid.contains(e.relatedTarget)) tt.classList.remove('show');
+      });
+    })();
+
+    // =========================================================================
     //  AI BAR
-    // ====================================================================
+    // =========================================================================
     const aiInput = document.getElementById('ai-input');
-    const submit  = () => {
+    const aiSubmit = () => {
       const q = aiInput.value.trim();
       if (!q) return;
       console.log(`[${document.getElementById('ai-model').value}]`, q);
       aiInput.value = '';
     };
-    document.getElementById('ai-submit').addEventListener('click', submit);
-    aiInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    document.getElementById('ai-submit').addEventListener('click', aiSubmit);
+    aiInput.addEventListener('keydown', e => { if (e.key === 'Enter') aiSubmit(); });
 
-    // ====================================================================
-    //  YOUTUBE MUSIC PLAYER
-    //  Uses the official YouTube IFrame Player API. The iframe lives in a
-    //  hidden 1×1 container (positioned off-screen) so we can drive it with
-    //  custom buttons while only audio reaches the user.
-    //
-    //  → Swap out MUSIC_TRACKS with your own video / mix IDs.
-    // ====================================================================
+    // =========================================================================
+    //  YOUTUBE MUSIC PLAYER + SEARCH
+    //  Search uses YouTube Data API v3 — enable it on the same Google Cloud
+    //  project as the Calendar API (Console → APIs & Services → Library →
+    //  "YouTube Data API v3" → Enable).
+    // =========================================================================
     const MUSIC_TRACKS = [
       { id: 'jfKfPfyJRdk', title: 'Lofi Girl · Beats to Relax / Study' },
-      { id: '6jWtghgPbpk', title: 'Storm Clouds Ambience' },
-      { id: 'DWcJFNfaw9c', title: 'Chillhop Radio' },
-      { id: '4xDzrJKXOOY', title: 'Deep Focus · Ambient' },
+      { id: 'AIjwrIdtlRg', title: 'Storm Clouds Ambience' },
     ];
 
     let ytPlayer    = null;
@@ -812,31 +956,24 @@
       progressEl.style.width = '0%';
     }
 
-    // Inject the YouTube IFrame API script
     (function loadYouTubeAPI() {
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       document.head.appendChild(tag);
     })();
 
-    // The API calls this global once ready
     window.onYouTubeIframeAPIReady = function () {
       ytPlayer = new YT.Player('yt-music-player', {
-        height: '1',
-        width:  '1',
+        height: '1', width:  '1',
         videoId: MUSIC_TRACKS[trackIndex].id,
         playerVars: {
           autoplay: 0, controls: 0, disablekb: 1,
           modestbranding: 1, rel: 0, playsinline: 1, iv_load_policy: 3,
         },
         events: {
-          onReady: () => {
-            setTrackUI();
-            setInterval(updateMusicProgress, 800);
-          },
+          onReady: () => { setTrackUI(); setInterval(updateMusicProgress, 800); },
           onStateChange: (e) => {
-            // 1 = playing, 2 = paused, 0 = ended
-            if (e.data === 1) setPlayingUI(true);
+            if      (e.data === 1) setPlayingUI(true);
             else if (e.data === 2) setPlayingUI(false);
             else if (e.data === 0) musicNext();
           },
@@ -868,9 +1005,129 @@
       ytPlayer.loadVideoById(MUSIC_TRACKS[trackIndex].id);
       setTrackUI();
     }
+    function loadAndPlay(id, title) {
+      if (!ytPlayer) return;
+      const existing = MUSIC_TRACKS.findIndex(t => t.id === id);
+      if (existing === -1) {
+        MUSIC_TRACKS.push({ id, title });
+        trackIndex = MUSIC_TRACKS.length - 1;
+      } else {
+        trackIndex = existing;
+      }
+      ytPlayer.loadVideoById(id);
+      ytPlayer.playVideo();
+      setTrackUI();
+    }
+
     playerEl.querySelector('[data-action="prev"]').addEventListener('click', musicPrev);
     playerEl.querySelector('[data-action="play"]').addEventListener('click', musicToggle);
     playerEl.querySelector('[data-action="next"]').addEventListener('click', musicNext);
+
+    // --- Search popover ---
+    const popover    = document.getElementById('mp-search-popover');
+    const searchBtn  = playerEl.querySelector('[data-action="search"]');
+    const searchIn   = document.getElementById('mp-search-input');
+    const searchHint = document.getElementById('mp-search-hint');
+    const searchRes  = document.getElementById('mp-search-results');
+
+    searchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      popover.classList.toggle('is-open');
+      searchBtn.classList.toggle('is-active', popover.classList.contains('is-open'));
+      if (popover.classList.contains('is-open')) setTimeout(() => searchIn.focus(), 50);
+    });
+    document.addEventListener('click', (e) => {
+      if (!popover.contains(e.target) && e.target !== searchBtn) {
+        popover.classList.remove('is-open');
+        searchBtn.classList.remove('is-active');
+      }
+    });
+    popover.addEventListener('click', e => e.stopPropagation());
+
+    /** Pull a video ID out of any common YouTube URL form (or accept an 11-char ID). */
+    function extractVideoId(input) {
+      const trimmed = input.trim();
+      let m;
+      if ((m = trimmed.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/)))  return m[1];
+      if ((m = trimmed.match(/[?&]v=([a-zA-Z0-9_-]{11})/)))       return m[1];
+      if ((m = trimmed.match(/embed\/([a-zA-Z0-9_-]{11})/)))      return m[1];
+      if ((m = trimmed.match(/shorts\/([a-zA-Z0-9_-]{11})/)))     return m[1];
+      if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed))                    return trimmed;
+      return null;
+    }
+
+    async function searchYouTube(q) {
+      if (GOOGLE_API_KEY.startsWith('YOUR_')) {
+        searchHint.textContent = 'add a Google API key (with YouTube Data API enabled) to search';
+        return [];
+      }
+      const url = `https://www.googleapis.com/youtube/v3/search` +
+        `?part=snippet&type=video&maxResults=6` +
+        `&q=${encodeURIComponent(q)}&key=${GOOGLE_API_KEY}`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        searchHint.textContent = `search error · HTTP ${res.status} · enable "YouTube Data API v3" on your key`;
+        return [];
+      }
+      const data = await res.json();
+      return (data.items || []).map(i => ({
+        id: i.id.videoId,
+        title: decodeHTML(i.snippet.title),
+        channel: i.snippet.channelTitle,
+        thumb: i.snippet.thumbnails?.default?.url,
+      }));
+    }
+    function decodeHTML(s) {
+      const el = document.createElement('textarea'); el.innerHTML = s; return el.value;
+    }
+
+    function renderSearchResults(items) {
+      searchRes.innerHTML = '';
+      if (!items.length) return;
+      for (const it of items) {
+        const row = document.createElement('div');
+        row.className = 'mp-result';
+        row.innerHTML = `
+          <img src="${it.thumb}" alt="" />
+          <div class="mp-result-meta">
+            <div class="mp-result-title">${it.title}</div>
+            <div class="mp-result-channel">${it.channel}</div>
+          </div>`;
+        row.addEventListener('click', () => {
+          loadAndPlay(it.id, it.title);
+          popover.classList.remove('is-open');
+          searchBtn.classList.remove('is-active');
+          searchIn.value = '';
+          searchRes.innerHTML = '';
+        });
+        searchRes.appendChild(row);
+      }
+    }
+
+    searchIn.addEventListener('keydown', async (e) => {
+      if (e.key !== 'Enter') return;
+      const v = searchIn.value;
+      if (!v.trim()) return;
+
+      // 1) URL / ID paste → load directly
+      const id = extractVideoId(v);
+      if (id) {
+        loadAndPlay(id, v.length > 60 ? id : v);
+        popover.classList.remove('is-open');
+        searchBtn.classList.remove('is-active');
+        searchIn.value = '';
+        searchRes.innerHTML = '';
+        return;
+      }
+
+      // 2) Otherwise → YouTube Data API search
+      searchHint.textContent = 'searching…';
+      const items = await searchYouTube(v);
+      searchHint.textContent = items.length
+        ? `${items.length} result${items.length === 1 ? '' : 's'} · click to play`
+        : 'no results';
+      renderSearchResults(items);
+    });
   </script>
 </body>
 </html>
