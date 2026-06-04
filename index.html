@@ -35,13 +35,14 @@
 
     * { box-sizing: border-box; }
 
+    html { background: #020617; }   /* root canvas fallback */
+
     html, body {
       margin: 0; padding: 0;
       width: 100vw; height: 100vh;
       overflow: hidden;
       font-family: 'Manrope', sans-serif;
       color: var(--text-muted);
-      background: #020617;
       letter-spacing: 0.01em;
       -webkit-font-smoothing: antialiased;
     }
@@ -386,11 +387,11 @@
 <body>
   <!-- ===== YouTube background ===== -->
   <div class="yt-bg">
-    <iframe
-      src="https://www.youtube.com/embed/6jWtghgPbpk?autoplay=1&mute=1&loop=1&playlist=6jWtghgPbpk&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1&start=5"
-      allow="autoplay; encrypted-media"
-      title="background"
-    ></iframe>
+  <iframe
+  src="https://www.youtube.com/embed/AIjwrIdtlRg?autoplay=1&mute=1&loop=1&playlist=AIjwrIdtlRg&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
+  allow="autoplay; encrypted-media"
+  title="background"
+></iframe>
     <div class="yt-vignette"></div>
     <div class="absolute inset-0 bg-slate-950/70"></div>
   </div>
@@ -517,8 +518,7 @@
     //  CONFIG
     // ====================================================================
     const GOOGLE_CALENDAR_API_KEY = 'AIzaSyDZl2AX_u6E7a30670FbrxZjh9U_XDxSwY';
-    const GOOGLE_CALENDAR_ID       = '026eaba252985e266f832cf7a28b84dbf6a796617a3310901789f2355cb53dd4@group.calendar.google.com
-';
+    const GOOGLE_CALENDAR_ID       = '026eaba252985e266f832cf7a28b84dbf6a796617a3310901789f2355cb53dd4@group.calendar.google.com';
 
     const YEAR        = new Date().getFullYear();
     const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
