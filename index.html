@@ -25,6 +25,8 @@
       --text-bright: rgba(255, 255, 255, 0.95);
       --accent: rgb(125, 211, 252);
       --travel: rgba(168, 85, 247, 0.92);
+      --purple-soft: rgb(216, 180, 254);
+      --purple-strong: rgb(168, 85, 247);
     }
     * { box-sizing: border-box; }
     html { background: #020617; }
@@ -78,101 +80,45 @@
     }
 
     /* --- Tasks --- */
-    .task-row {
-      display: flex; align-items: center; gap: 8px;
-      padding: 3px 2px;
-      font-size: 10px; color: var(--text-muted); cursor: pointer;
-      transition: color 0.15s;
-    }
+    .task-row { display: flex; align-items: center; gap: 8px; padding: 3px 2px; font-size: 10px; color: var(--text-muted); cursor: pointer; transition: color 0.15s; }
     .task-row:hover { color: var(--text-bright); }
-    .task-row input[type="checkbox"] {
-      appearance: none; -webkit-appearance: none;
-      width: 11px; height: 11px;
-      border: 1px solid var(--border-strong);
-      border-radius: 3px; background: transparent;
-      position: relative; cursor: pointer; flex-shrink: 0;
-      transition: all 0.15s;
-    }
+    .task-row input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 11px; height: 11px; border: 1px solid var(--border-strong); border-radius: 3px; background: transparent; position: relative; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
     .task-row input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
-    .task-row input[type="checkbox"]:checked::after {
-      content: ''; position: absolute;
-      left: 3px; top: 0px; width: 3px; height: 6px;
-      border: solid #0c1426; border-width: 0 1.5px 1.5px 0;
-      transform: rotate(45deg);
-    }
+    .task-row input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 3px; top: 0px; width: 3px; height: 6px; border: solid #0c1426; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
     .task-row input[type="checkbox"]:checked + span { text-decoration: line-through; color: var(--text-dim); }
 
     /* --- FullCalendar --- */
     #main-calendar { height: 100%; font-size: 9px; color: var(--text-muted); }
-    .fc {
-      height: 100% !important;
-      --fc-border-color: rgba(255, 255, 255, 0.05);
-      --fc-page-bg-color: transparent;
-      --fc-neutral-bg-color: transparent;
-      --fc-today-bg-color: rgba(125, 211, 252, 0.10);
-      --fc-event-border-color: transparent;
-      --fc-event-text-color: white;
-    }
+    .fc { height: 100% !important; --fc-border-color: rgba(255,255,255,0.05); --fc-page-bg-color: transparent; --fc-neutral-bg-color: transparent; --fc-today-bg-color: rgba(125,211,252,0.10); --fc-event-border-color: transparent; --fc-event-text-color: white; }
     .fc .fc-toolbar.fc-header-toolbar { margin-bottom: 4px; }
     .fc .fc-toolbar-title { font-size: 10px; font-weight: 600; color: var(--text-bright); letter-spacing: 0.02em; }
-    .fc .fc-button {
-      padding: 1px 5px; font-size: 8px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      border-radius: 3px; color: var(--text-muted);
-      text-transform: capitalize; box-shadow: none;
-      font-family: 'Manrope', sans-serif; line-height: 1.2;
-    }
-    .fc .fc-button:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--border-strong); color: var(--text-bright); }
+    .fc .fc-button { padding: 1px 5px; font-size: 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 3px; color: var(--text-muted); text-transform: capitalize; box-shadow: none; font-family: 'Manrope',sans-serif; line-height: 1.2; }
+    .fc .fc-button:hover { background: rgba(255,255,255,0.08); border-color: var(--border-strong); color: var(--text-bright); }
     .fc .fc-button .fc-icon { font-size: 10px; line-height: 1; }
-    .fc .fc-col-header-cell { padding: 0; background: rgba(255, 255, 255, 0.02); }
+    .fc .fc-col-header-cell { padding: 0; background: rgba(255,255,255,0.02); }
     .fc .fc-col-header-cell-cushion { padding: 2px; font-size: 8px; color: var(--text-dim); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; text-decoration: none; }
     .fc .fc-daygrid-day-number { padding: 1px 3px; font-size: 9px; color: var(--text-muted); text-decoration: none; }
     .fc .fc-day-today .fc-daygrid-day-number { color: var(--accent); font-weight: 700; }
-    .fc .fc-day-other .fc-daygrid-day-number { color: rgba(255, 255, 255, 0.15); }
+    .fc .fc-day-other .fc-daygrid-day-number { color: rgba(255,255,255,0.15); }
     .fc-daygrid-event { font-size: 8px; padding: 0 2px; margin-top: 1px; border-radius: 2px; }
     .fc .fc-more-link { font-size: 7px; padding: 0 2px; color: var(--text-dim); }
 
     /* --- Gantt --- */
     #gantt-container { height: 100%; display: flex; flex-direction: column; }
-    .gantt-grid {
-      display: grid;
-      grid-template-columns: 24px repeat(37, 1fr);
-      grid-template-rows: 10px repeat(12, 1fr);
-      flex: 1; gap: 1px;
-      position: relative; min-height: 0;
-    }
-    .gantt-dow { font-size: 6.5px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--text-dim); display: flex; align-items: center; justify-content: center; line-height: 1; }
-    .gantt-dow.is-weekend { color: rgba(125, 211, 252, 0.6); }
-    .gantt-month-label { display: flex; align-items: center; font-size: 8px; font-weight: 700; color: var(--text-bright); text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono', monospace; }
-    .gantt-day { background: rgba(255, 255, 255, 0.03); border-radius: 1px; min-height: 0; position: relative; }
-    .gantt-day.weekend { background: rgba(255, 255, 255, 0.07); }
-    .gantt-day.today { background: rgba(125, 211, 252, 0.4); box-shadow: 0 0 0 1px var(--accent); }
-    .gantt-bar {
-      border-radius: 2px; align-self: stretch;
-      font-size: 6px; padding: 0 4px; color: white;
-      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-      display: flex; align-items: center;
-      font-weight: 700; font-family: 'Manrope', sans-serif; letter-spacing: 0.03em;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-      cursor: pointer; transition: filter 0.15s;
-    }
+    .gantt-grid { display: grid; grid-template-columns: 24px repeat(37, 1fr); grid-template-rows: 10px repeat(12, 1fr); flex: 1; gap: 1px; position: relative; min-height: 0; }
+    .gantt-dow { font-size: 6.5px; font-weight: 700; font-family: 'JetBrains Mono',monospace; color: var(--text-dim); display: flex; align-items: center; justify-content: center; line-height: 1; }
+    .gantt-dow.is-weekend { color: rgba(125,211,252,0.6); }
+    .gantt-month-label { display: flex; align-items: center; font-size: 8px; font-weight: 700; color: var(--text-bright); text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono',monospace; }
+    .gantt-day { background: rgba(255,255,255,0.03); border-radius: 1px; min-height: 0; position: relative; }
+    .gantt-day.weekend { background: rgba(255,255,255,0.07); }
+    .gantt-day.today { background: rgba(125,211,252,0.4); box-shadow: 0 0 0 1px var(--accent); }
+    .gantt-bar { border-radius: 2px; align-self: stretch; font-size: 6px; padding: 0 4px; color: white; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: flex; align-items: center; font-weight: 700; font-family: 'Manrope',sans-serif; letter-spacing: 0.03em; box-shadow: 0 1px 2px rgba(0,0,0,0.3); text-shadow: 0 1px 1px rgba(0,0,0,0.4); cursor: pointer; transition: filter 0.15s; }
     .gantt-bar:hover { filter: brightness(1.2); z-index: 5; }
 
-    #gantt-tooltip {
-      position: fixed; background: rgba(2, 6, 23, 0.96);
-      border: 1px solid var(--border-strong); color: white;
-      padding: 7px 10px; border-radius: 6px;
-      pointer-events: none; z-index: 9999;
-      backdrop-filter: blur(20px);
-      font-family: 'Manrope', sans-serif;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
-      opacity: 0; transition: opacity 0.12s; max-width: 240px;
-    }
+    #gantt-tooltip { position: fixed; background: rgba(2,6,23,0.96); border: 1px solid var(--border-strong); color: white; padding: 7px 10px; border-radius: 6px; pointer-events: none; z-index: 9999; backdrop-filter: blur(20px); font-family: 'Manrope',sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.12s; max-width: 240px; }
     #gantt-tooltip.show { opacity: 1; }
     .tt-title { font-size: 11px; font-weight: 700; color: white; margin-bottom: 3px; line-height: 1.2; }
-    .tt-date { font-size: 9px; color: rgba(255,255,255,0.7); font-family: 'JetBrains Mono', monospace; }
+    .tt-date { font-size: 9px; color: rgba(255,255,255,0.7); font-family: 'JetBrains Mono',monospace; }
     .tt-cat { font-size: 8px; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; display: inline-block; padding: 1px 5px; border-radius: 3px; color: white; }
 
     /* --- Weather --- */
@@ -181,16 +127,21 @@
 
     /* --- AI bar --- */
     .ai-bar { display: flex; align-items: center; gap: 10px; padding: 8px 10px; }
-    .ai-bar select, .ai-bar input { background: transparent; border: none; outline: none; color: var(--text-bright); font-size: 11px; font-family: 'Manrope', sans-serif; }
-    .ai-bar select { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); padding: 3px 6px; border-radius: 4px; font-size: 9px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+    .ai-bar select, .ai-bar input { background: transparent; border: none; outline: none; color: var(--text-bright); font-size: 11px; font-family: 'Manrope',sans-serif; }
+    .ai-bar select { background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 3px 6px; border-radius: 4px; font-size: 9px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
     .ai-bar select option { background: #0f172a; color: white; }
     .ai-bar input { flex: 1; }
     .ai-bar input::placeholder { color: var(--text-dim); }
     .ai-bar button#ai-submit { background: var(--accent); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
     .ai-bar button#ai-submit:hover { transform: scale(1.06); filter: brightness(1.1); }
 
-    /* --- Music --- */
-    .music-player { display: flex; align-items: center; gap: 10px; padding: 6px 12px; width: 320px; flex-shrink: 0; position: relative; }
+    /* --- Music player --- */
+    .music-player {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 12px; width: 320px;
+      flex-shrink: 0; position: relative;
+      overflow: visible;     /* <-- ensure popover isn't clipped */
+    }
     .mp-controls { display: flex; gap: 3px; align-items: center; }
     .mp-btn { width: 22px; height: 22px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 50%; color: var(--text-bright); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; padding: 0; }
     .mp-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--border-strong); }
@@ -209,7 +160,21 @@
     .mp-progress { height: 2px; background: rgba(255,255,255,0.08); border-radius: 1px; overflow: hidden; }
     .mp-progress-fill { height: 100%; background: var(--accent); width: 0%; border-radius: 1px; transition: width 0.5s linear; }
     .yt-hidden { position: absolute; top: -200px; left: -200px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-    .mp-search-popover { position: absolute; bottom: calc(100% + 6px); right: 0; width: 360px; background: rgba(2,6,23,0.95); backdrop-filter: blur(20px); border: 1px solid var(--border-strong); border-radius: 10px; padding: 8px; z-index: 50; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: none; flex-direction: column; gap: 6px; }
+
+    /* Search popover — now lives in <body>, position fixed via JS */
+    .mp-search-popover {
+      position: fixed;
+      width: 360px;
+      background: rgba(2,6,23,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 8px;
+      z-index: 9999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: none; flex-direction: column; gap: 6px;
+    }
     .mp-search-popover.is-open { display: flex; }
     .mp-search-input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; font-size: 11px; color: var(--text-bright); font-family: 'Manrope',sans-serif; outline: none; }
     .mp-search-input:focus { border-color: var(--accent); }
@@ -223,151 +188,106 @@
     .mp-result-title { font-size: 10px; color: var(--text-bright); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 500; }
     .mp-result-channel { font-size: 8px; color: var(--text-dim); font-family: 'JetBrains Mono',monospace; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* ===== RIGHT SIDEBAR ===== */
+    /* ===== RIGHT SIDEBAR (300px) ===== */
 
     /* Long Night Counter */
-    .longnight-num {
-      font-size: 30px; font-weight: 800;
-      color: rgb(251, 146, 60); /* orange */
-      line-height: 1; font-family: 'Manrope', sans-serif;
+    .ln-row { display: flex; align-items: baseline; gap: 6px; }
+    .ln-num {
+      font-size: 22px; font-weight: 800;
+      color: rgb(251, 146, 60);
+      line-height: 1;
       letter-spacing: -0.02em;
     }
-    .longnight-label {
-      font-size: 10px; color: var(--text-muted);
-      margin-left: 6px;
-      letter-spacing: 0.04em;
-    }
-    .longnight-footer {
-      font-size: 9px; color: var(--text-dim);
-      text-transform: uppercase; letter-spacing: 0.22em;
-      text-align: center; margin-top: 4px;
-    }
+    .ln-label { font-size: 9px; color: var(--text-muted); letter-spacing: 0.02em; }
+    .ln-footer { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2em; text-align: center; margin-top: 5px; }
 
-    /* Miles */
-    .miles-row { display: flex; align-items: center; justify-content: space-between; padding: 2px 0; }
-    .miles-brand { font-size: 9px; font-weight: 700; color: var(--text-bright); text-transform: uppercase; letter-spacing: 0.06em; }
-    .miles-pts { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: rgb(251, 191, 36); font-weight: 600; }
+    /* Miles (purple) */
+    .miles-row { display: flex; align-items: center; justify-content: space-between; padding: 1px 0; gap: 4px; }
+    .miles-brand { font-size: 9px; font-weight: 700; color: var(--purple-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+    .miles-pts { font-size: 10px; font-family: 'JetBrains Mono',monospace; color: var(--purple-strong); font-weight: 700; }
 
-    /* World Map */
+    /* World map */
     #world-map { width: 100%; height: 100%; }
     #world-map svg { width: 100%; height: 100%; display: block; }
-    .map-country {
-      fill: rgba(255, 255, 255, 0.06);
-      stroke: rgba(0, 0, 0, 0.5);
-      stroke-width: 0.4;
-      transition: fill 0.15s;
-    }
-    .map-country.visited {
-      fill: var(--travel);
-      cursor: pointer;
-    }
+    .map-country { fill: rgba(255,255,255,0.06); stroke: rgba(0,0,0,0.5); stroke-width: 0.4; transition: fill 0.15s; }
+    .map-country.visited { fill: var(--travel); cursor: pointer; }
     .map-country.visited:hover { fill: rgb(216, 180, 254); }
 
-    .country-popup {
-      position: fixed;
-      z-index: 9998;
-      background: rgba(2, 6, 23, 0.97);
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
-      padding: 10px 12px;
-      width: 280px;
-      max-height: 320px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
-      display: flex; flex-direction: column; gap: 6px;
-      animation: fadeIn 0.18s ease-out;
-    }
+    .country-popup { position: fixed; z-index: 9998; background: rgba(2,6,23,0.97); border: 1px solid var(--border-strong); border-radius: 8px; padding: 10px 12px; width: 280px; max-height: 320px; backdrop-filter: blur(20px); box-shadow: 0 12px 32px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 6px; animation: fadeIn 0.18s ease-out; }
     .popup-header { display: flex; align-items: center; gap: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .popup-flag { font-size: 16px; }
     .popup-title { flex: 1; font-size: 12px; font-weight: 700; color: var(--text-bright); }
-    .popup-count { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+    .popup-count { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono',monospace; }
     .popup-close { width: 18px; height: 18px; border-radius: 4px; background: rgba(255,255,255,0.06); border: none; color: var(--text-bright); cursor: pointer; line-height: 1; font-size: 12px; }
     .popup-close:hover { background: rgba(255,255,255,0.15); }
     .popup-list { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 240px; }
     .popup-trip { padding: 5px 6px; border-radius: 4px; background: rgba(255,255,255,0.03); border-left: 2px solid var(--travel); }
     .popup-trip-title { font-size: 10px; color: var(--text-bright); font-weight: 600; }
-    .popup-trip-date { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+    .popup-trip-date { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono',monospace; margin-top: 1px; }
 
-    /* Apps + Finance */
-    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; font-size: 10px; }
-    .stat-row .label { color: rgb(56, 189, 248); font-weight: 600; }
-    .stat-row .value { font-family: 'JetBrains Mono', monospace; color: var(--text-bright); }
+    /* Finance Dashboard */
+    .fin-header { display: flex; align-items: baseline; justify-content: space-between; }
+    .fin-title { font-size: 11px; font-weight: 700; color: var(--text-bright); }
+    .fin-period { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono',monospace; cursor: pointer; user-select: none; }
+    .fin-period:hover { color: var(--text-bright); }
+    .fin-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+    .fin-col { display: flex; flex-direction: column; gap: 3px; }
+    .fin-col-title { font-size: 10px; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
+    .fin-item { font-size: 10px; font-weight: 600; line-height: 1.35; }
+    .fin-item.savings { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    .fin-total { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: auto; padding-top: 4px; border-top: 1px dashed rgba(255,255,255,0.1); font-weight: 600; }
 
-    .fin-row { display: grid; grid-template-columns: 1fr auto; gap: 4px; font-size: 10px; padding: 2px 0; }
-    .fin-row .label { color: var(--text-muted); font-weight: 500; }
-    .fin-row .value { font-family: 'JetBrains Mono', monospace; text-align: right; }
-    .fin-row .value.over { color: rgb(248, 113, 113); }
-    .fin-row .value.under { color: rgb(110, 231, 183); }
-    .fin-row .value.neutral { color: rgb(252, 211, 77); }
-
-    /* Health card (light) */
+    /* Health card (dark) */
     .health-card {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(12px);
+      background: rgba(8, 13, 28, 0.85);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 12px 14px;
-      color: #1a1a1a;
+      padding: 10px 12px;
+      color: white;
       box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-      display: flex; flex-direction: column; gap: 8px;
+      display: flex; flex-direction: column; gap: 7px;
       overflow: hidden;
     }
-    .health-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .health-col-title { font-size: 10px; color: #6b7280; font-weight: 600; text-align: center; }
-    .health-col-title.month { display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer; }
-    .health-col-title.month .arrow { color: #d1d5db; }
-    .health-metric { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: #1f2937; }
-    .health-metric .icon { font-size: 14px; }
-    .health-metric .unit { font-size: 8px; color: #6b7280; font-weight: 500; }
-    .health-exercise { display: flex; flex-direction: column; gap: 2px; }
-    .health-ex-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; font-size: 9px; color: #4b5563; align-items: center; }
-    .health-ex-row .name { font-weight: 600; color: #1f2937; }
-    .health-ex-row .time { color: #9ca3af; font-family: 'JetBrains Mono', monospace; }
-    .health-ex-row .cal { color: #f97316; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .health-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .health-col-title { font-size: 9px; color: var(--text-dim); font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 0.06em; }
+    .health-col-title.month { display: flex; align-items: center; justify-content: center; gap: 3px; cursor: pointer; }
+    .health-col-title.month .arrow { color: rgba(255,255,255,0.3); }
+    .health-metric { display: flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: white; }
+    .health-metric .icon { font-size: 12px; }
+    .health-metric .unit { font-size: 8px; color: var(--text-dim); font-weight: 500; }
+    .health-exercise { display: flex; flex-direction: column; gap: 1px; padding: 4px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .health-ex-row { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; font-size: 9px; color: rgba(255,255,255,0.7); align-items: center; }
+    .health-ex-row .name { font-weight: 600; color: white; }
+    .health-ex-row .time { color: var(--text-dim); font-family: 'JetBrains Mono',monospace; }
+    .health-ex-row .cal { color: rgb(251, 146, 60); font-family: 'JetBrains Mono',monospace; font-weight: 700; }
 
-    .health-charts { display: grid; grid-template-columns: 90px 1fr; gap: 10px; align-items: center; }
-    .health-pie {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: conic-gradient(
-        rgb(20, 184, 166)  0%   33%,   /* carbs */
-        rgb(244, 114, 182) 33%  66%,   /* fat */
-        rgb(168, 85, 247)  66%  100%   /* protein */
-      );
-      position: relative;
-    }
-    .health-pie::after {
-      content: ''; position: absolute; inset: 14px;
-      background: white; border-radius: 50%;
-    }
-    .health-legend { display: flex; gap: 6px; margin-top: 4px; font-size: 8px; }
-    .health-legend .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 2px; vertical-align: middle; }
-
-    .health-weight-chart { width: 100%; height: 50px; }
-    .health-weight-chart polyline { fill: none; stroke: rgb(96, 165, 250); stroke-width: 1.5; }
-    .health-weight-summary { display: flex; gap: 10px; justify-content: flex-end; font-size: 10px; }
-    .health-weight-summary .item { display: flex; align-items: center; gap: 3px; font-weight: 700; }
-
-    .health-footer { display: flex; justify-content: space-between; font-size: 9px; color: #6b7280; }
+    .health-charts { display: grid; grid-template-columns: 55px 1fr; gap: 8px; align-items: center; }
+    .health-pie { width: 50px; height: 50px; border-radius: 50%; background: conic-gradient(rgb(20,184,166) 0% 33%, rgb(244,114,182) 33% 66%, rgb(168,85,247) 66% 100%); position: relative; }
+    .health-pie::after { content: ''; position: absolute; inset: 9px; background: rgb(8,13,28); border-radius: 50%; }
+    .health-legend { display: flex; gap: 4px; margin-top: 3px; font-size: 7px; color: var(--text-dim); flex-wrap: wrap; }
+    .health-legend .dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; margin-right: 2px; vertical-align: middle; }
+    .health-weight-chart { width: 100%; height: 36px; }
+    .health-weight-chart polyline { fill: none; stroke: rgb(96,165,250); stroke-width: 1.5; }
+    .health-weight-summary { display: flex; gap: 8px; justify-content: flex-end; font-size: 10px; }
+    .health-weight-summary .item { display: flex; align-items: center; gap: 2px; font-weight: 700; color: white; }
+    .health-footer { display: flex; justify-content: space-between; font-size: 9px; color: var(--text-dim); }
 
     @keyframes pulse-dot { 0%,100%{opacity:0.35;} 50%{opacity:1;} }
     .live-dot { animation: pulse-dot 1.8s infinite; }
-
     @keyframes fadeIn { from{opacity:0;transform:translateY(4px);} to{opacity:1;transform:translateY(0);} }
     .fade-in { animation: fadeIn 0.5s cubic-bezier(0.2,0.8,0.2,1) backwards; }
   </style>
 </head>
 <body>
-  <div class="yt-bg">
-    <video src="storm.mp4" autoplay muted loop playsinline preload="auto"></video>
-  </div>
+  <div class="yt-bg"><video src="storm.mp4" autoplay muted loop playsinline preload="auto"></video></div>
 
   <div class="flex h-screen w-screen overflow-hidden p-3 gap-3 relative">
     <!-- ===== LEFT SIDEBAR ===== -->
     <aside class="w-[300px] grid gap-3 grid-rows-[15fr_45fr_40fr]">
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.05s">
-        <div class="panel-header">
-          <span class="panel-title">Tasks</span>
-          <span class="font-mono text-[8px] text-white/40" id="task-count">— / —</span>
-        </div>
+        <div class="panel-header"><span class="panel-title">Tasks</span><span class="font-mono text-[8px] text-white/40" id="task-count">— / —</span></div>
         <div class="flex-1 overflow-y-auto" id="task-list">
           <label class="task-row"><input type="checkbox" checked /><span>Review Q3 financial report</span></label>
           <label class="task-row"><input type="checkbox" checked /><span>Update onboarding documentation</span></label>
@@ -378,18 +298,12 @@
       </section>
 
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.1s">
-        <div class="panel-header">
-          <span class="panel-title">Calendar</span>
-          <span class="font-mono text-[8px] text-emerald-400 live-dot">● LIVE</span>
-        </div>
+        <div class="panel-header"><span class="panel-title">Calendar</span><span class="font-mono text-[8px] text-emerald-400 live-dot">● LIVE</span></div>
         <div class="flex-1 min-h-0"><div id="main-calendar"></div></div>
       </section>
 
       <section class="glass flex flex-col fade-in" style="animation-delay: 0.15s">
-        <div class="panel-header">
-          <span class="panel-title">Year Overview · <span id="gantt-year"></span></span>
-          <span class="font-mono text-[8px] text-white/40" id="gantt-count">— events</span>
-        </div>
+        <div class="panel-header"><span class="panel-title">Year Overview · <span id="gantt-year"></span></span><span class="font-mono text-[8px] text-white/40" id="gantt-count">— events</span></div>
         <div id="gantt-container"><div class="gantt-grid" id="gantt-grid"></div></div>
       </section>
     </aside>
@@ -400,10 +314,7 @@
         <div class="flex items-center gap-3 pr-5 border-r border-white/10">
           <span class="text-4xl leading-none">⛈️</span>
           <div>
-            <div class="flex items-baseline gap-1">
-              <span class="text-3xl font-extralight text-white tracking-tight">12</span>
-              <span class="text-[10px] text-white/60">°C</span>
-            </div>
+            <div class="flex items-baseline gap-1"><span class="text-3xl font-extralight text-white tracking-tight">12</span><span class="text-[10px] text-white/60">°C</span></div>
             <div class="text-[9px] text-white/50 font-mono uppercase tracking-widest mt-0.5">Humidity 92% · Storm</div>
           </div>
         </div>
@@ -417,11 +328,7 @@
           <select id="ai-model"><option>Claude</option><option>Gemini</option><option>GPT</option></select>
           <span class="text-[11px] text-white/20 font-mono">›</span>
           <input type="text" id="ai-input" placeholder="Ask anything…" autocomplete="off" />
-          <button id="ai-submit" title="Submit">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0c1426" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </button>
+          <button id="ai-submit" title="Submit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0c1426" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
         </section>
 
         <section class="glass music-player" id="music-player">
@@ -432,91 +339,69 @@
             <button class="mp-btn" data-action="search"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
           </div>
           <div class="mp-info">
-            <div class="mp-meta">
-              <span class="mp-title">Loading…</span>
-              <span class="mp-eq"><span></span><span></span><span></span></span>
-            </div>
+            <div class="mp-meta"><span class="mp-title">Loading…</span><span class="mp-eq"><span></span><span></span><span></span></span></div>
             <div class="mp-progress"><div class="mp-progress-fill"></div></div>
-          </div>
-          <div class="mp-search-popover" id="mp-search-popover">
-            <input type="text" class="mp-search-input" id="mp-search-input" placeholder="Search YouTube or paste a URL / video ID…" autocomplete="off" />
-            <div class="mp-search-hint" id="mp-search-hint">Press Enter to search · Paste a URL to load directly</div>
-            <div class="mp-search-results" id="mp-search-results"></div>
           </div>
           <div class="yt-hidden"><div id="yt-music-player"></div></div>
         </section>
       </div>
     </main>
 
-    <!-- ===== RIGHT SIDEBAR (NEW) ===== -->
-    <aside class="w-[500px] flex flex-col gap-3">
-      <!-- Long Night Counter + Miles -->
-      <div class="flex gap-3 h-[100px]">
+    <!-- ===== RIGHT SIDEBAR (300px) ===== -->
+    <aside class="w-[300px] flex flex-col gap-3">
+      <!-- Counter + Miles row -->
+      <div class="flex gap-3" style="height: 90px">
         <section class="glass flex-1 flex flex-col justify-center fade-in" style="animation-delay: 0.25s">
-          <div class="grid grid-cols-2 gap-3 px-2">
-            <div class="flex items-baseline">
-              <span class="longnight-num" id="ln-since">—</span>
-              <span class="longnight-label">Days since</span>
-            </div>
-            <div class="flex items-baseline">
-              <span class="longnight-num" id="ln-until">—</span>
-              <span class="longnight-label">Days Until</span>
-            </div>
-          </div>
-          <div class="longnight-footer">the long night</div>
+          <div class="ln-row"><span class="ln-num" id="ln-since">—</span><span class="ln-label">Days since</span></div>
+          <div class="ln-row" style="margin-top: 4px"><span class="ln-num" id="ln-until">—</span><span class="ln-label">Days Until</span></div>
+          <div class="ln-footer">the long night</div>
         </section>
 
-        <section class="glass flex flex-col justify-center fade-in" style="width: 200px; animation-delay: 0.3s">
+        <section class="glass flex flex-col justify-center fade-in" style="width: 130px; animation-delay: 0.3s">
           <div class="miles-row"><span class="miles-brand">Hilton</span><span class="miles-pts">20,448</span></div>
-          <div class="miles-row"><span class="miles-brand">Miles &amp; More</span><span class="miles-pts">65,000</span></div>
+          <div class="miles-row"><span class="miles-brand">M&amp;M</span><span class="miles-pts">65,000</span></div>
           <div class="miles-row"><span class="miles-brand">Marriott</span><span class="miles-pts">64,479</span></div>
         </section>
       </div>
 
-      <!-- World Map -->
-      <section class="glass flex-1 flex flex-col fade-in" style="animation-delay: 0.35s">
-        <div class="panel-header">
-          <span class="panel-title">Travels · <span id="map-count">—</span></span>
-          <span class="font-mono text-[8px] text-white/40">click a country</span>
-        </div>
+      <!-- World map -->
+      <section class="glass flex-1 flex flex-col fade-in" style="animation-delay: 0.35s; min-height: 180px">
+        <div class="panel-header"><span class="panel-title">Travels · <span id="map-count">—</span></span><span class="font-mono text-[8px] text-white/40">click a country</span></div>
         <div class="flex-1 min-h-0 relative"><div id="world-map"></div></div>
       </section>
 
-      <!-- Apps + Finance -->
-      <div class="flex gap-3" style="height: 110px">
-        <section class="glass flex-1 flex flex-col fade-in" style="animation-delay: 0.4s">
-          <div class="panel-header">
-            <span class="panel-title">Apps / Users</span>
-            <span class="font-mono text-[8px] text-white/40">stub</span>
+      <!-- Finance Dashboard -->
+      <section class="glass flex flex-col fade-in" style="height: 200px; animation-delay: 0.4s">
+        <div class="fin-header">
+          <span class="fin-title">Finance Dashboard</span>
+        </div>
+        <div class="fin-period" id="fin-period">‹ 06.2026 ›</div>
+        <div class="fin-cols flex-1">
+          <div class="fin-col">
+            <div class="fin-col-title">earned</div>
+            <div class="fin-item" style="color: rgb(250, 204, 21)">Work: 4000</div>
+            <div class="fin-item" style="color: rgb(34, 211, 238)">Other: 0</div>
+            <div class="fin-item" style="color: rgb(251, 146, 60)">Rent: 1000</div>
+            <div class="fin-total">Total: 5000</div>
           </div>
-          <div class="flex-1 flex flex-col justify-around">
-            <div class="stat-row"><span class="label">Food Tracker</span><span class="value">—</span></div>
-            <div class="stat-row"><span class="label">Dashboard</span><span class="value">—</span></div>
-            <div class="stat-row"><span class="label">PLM</span><span class="value">—</span></div>
+          <div class="fin-col">
+            <div class="fin-col-title">Spent</div>
+            <div class="fin-item" style="color: rgb(96, 165, 250)">Social 1300</div>
+            <div class="fin-item" style="color: rgb(74, 222, 128)">Health 950</div>
+            <div class="fin-item" style="color: rgb(168, 85, 247)">Travel 2300</div>
+            <div class="fin-item savings" style="color: rgb(251, 146, 60)">Savings 1300</div>
+            <div class="fin-total">Total 4500</div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="glass flex-1 flex flex-col fade-in" style="animation-delay: 0.45s">
-          <div class="panel-header">
-            <span class="panel-title">Finance</span>
-            <span class="font-mono text-[8px] text-white/40">ist / soll</span>
-          </div>
-          <div class="flex-1 flex flex-col justify-around">
-            <div class="fin-row"><span class="label">spent</span><span class="value over">1300 / 1000</span></div>
-            <div class="fin-row"><span class="label">earned</span><span class="value under">4000 / 4000</span></div>
-            <div class="fin-row"><span class="label">budget</span><span class="value neutral">2300 / 1000</span></div>
-          </div>
-        </section>
-      </div>
-
-      <!-- Health Dashboard (light) -->
-      <section class="health-card fade-in" id="health-card" style="height: 230px; animation-delay: 0.5s">
+      <!-- Health Dashboard (dark) -->
+      <section class="health-card fade-in" id="health-card" style="height: 240px; animation-delay: 0.45s">
         <div class="health-cols">
           <div class="health-col-title">Today</div>
           <div class="health-col-title month"><span class="arrow">‹</span> This Month <span class="arrow">›</span></div>
           <div class="health-col-title">Target</div>
         </div>
-
         <div class="health-cols">
           <div class="flex flex-col gap-1">
             <div class="health-metric"><span class="icon">🍱</span><span id="h-today-cal-in">3200</span><span class="unit">cal</span></div>
@@ -531,33 +416,30 @@
             <div class="health-metric"><span class="icon">🔥</span><span id="h-target-cal-out">1000</span><span class="unit">cal</span></div>
           </div>
         </div>
-
         <div class="health-exercise">
           <div class="health-ex-row"><span class="name">Weight lifting</span><span class="time">30 min</span><span class="cal">300 cal</span></div>
           <div class="health-ex-row"><span class="name">Jogging</span><span class="time">20 min</span><span class="cal">200 cal</span></div>
           <div class="health-ex-row"><span class="name">10 000 Steps</span><span class="time">—</span><span class="cal">300 cal</span></div>
         </div>
-
         <div class="health-charts">
           <div>
             <div class="health-pie"></div>
             <div class="health-legend">
-              <span><span class="dot" style="background:rgb(20,184,166)"></span>Carbs</span>
-              <span><span class="dot" style="background:rgb(244,114,182)"></span>Fat</span>
-              <span><span class="dot" style="background:rgb(168,85,247)"></span>Protein</span>
+              <span><span class="dot" style="background:rgb(20,184,166)"></span>C</span>
+              <span><span class="dot" style="background:rgb(244,114,182)"></span>F</span>
+              <span><span class="dot" style="background:rgb(168,85,247)"></span>P</span>
             </div>
           </div>
           <div class="flex flex-col gap-1">
-            <svg class="health-weight-chart" viewBox="0 0 200 50" preserveAspectRatio="none">
-              <polyline id="weight-line" points="0,30 20,28 40,29 60,26 80,28 100,25 120,23 140,24 160,22 180,21 200,20" />
+            <svg class="health-weight-chart" viewBox="0 0 200 36" preserveAspectRatio="none">
+              <polyline id="weight-line" points="0,22 20,21 40,22 60,19 80,21 100,18 120,16 140,17 160,15 180,14 200,13" />
             </svg>
             <div class="health-weight-summary">
-              <div class="item">⚖️ <span id="h-weight">80</span><span class="unit text-[8px] text-gray-400 ml-0.5">kg</span></div>
-              <div class="item">🧘 <span id="h-bodyfat">10</span><span class="unit text-[8px] text-gray-400 ml-0.5">%</span></div>
+              <div class="item">⚖️ <span id="h-weight">80</span><span class="unit text-[8px] text-white/40 ml-0.5">kg</span></div>
+              <div class="item">🧘 <span id="h-bodyfat">10</span><span class="unit text-[8px] text-white/40 ml-0.5">%</span></div>
             </div>
           </div>
         </div>
-
         <div class="health-footer">
           <span>Fiber: <span id="h-fiber" class="font-mono">59g</span></span>
           <span>Sugar: <span id="h-sugar" class="font-mono">22g</span></span>
@@ -567,6 +449,13 @@
   </div>
 
   <div id="gantt-tooltip" role="tooltip"></div>
+
+  <!-- Music search popover moved here so nothing can clip it -->
+  <div class="mp-search-popover" id="mp-search-popover">
+    <input type="text" class="mp-search-input" id="mp-search-input" placeholder="Search YouTube or paste a URL / video ID…" autocomplete="off" />
+    <div class="mp-search-hint" id="mp-search-hint">Press Enter to search · Paste a URL to load directly</div>
+    <div class="mp-search-results" id="mp-search-results"></div>
+  </div>
 
   <script>
     // =========================================================================
@@ -586,15 +475,6 @@
       { id: 'YOUR_EMAIL@gmail.com',                         name: 'Primary',   color: 'rgba(125, 211, 252, 0.92)' },
     ];
 
-    /*
-     * HEALTH PIPELINE — wired against your `PROC_Daily` sheet.
-     * Replace HEALTH_SHEET_ID with the spreadsheet ID from the URL
-     * (docs.google.com/spreadsheets/d/{HEALTH_SHEET_ID}/...).
-     * The sheet must be shared "Anyone with the link → Viewer".
-     *
-     * HEALTH_CELL_MAP tells the loader which cell holds which metric.
-     * Adjust to match your actual schema. Each value is `'SheetName!Cell'`.
-     */
     const HEALTH_SHEET_ID = 'YOUR_HEALTH_SHEET_ID';
     const HEALTH_CELL_MAP = {
       todayCalIn:   'PROC_Daily!B2',
@@ -607,7 +487,6 @@
       bodyfat:      'PROC_Daily!I2',
       fiber:        'PROC_Daily!J2',
       sugar:        'PROC_Daily!K2',
-      // Optional: a range of recent weight values for the chart (~30 days)
       weightSeries: 'PROC_Daily!H2:H32',
     };
 
@@ -620,77 +499,54 @@
     const activeMonthOnly    = MONTH_ONLY_CALENDARS.filter(c => !isPlaceholder(c));
     const allMonthCalendars  = [...activeShared, ...activeMonthOnly];
 
-    // City → Country lookup for the world map. Extend with cities you visit often.
-    // Country names must match `world-atlas` topojson names exactly.
     const CITY_TO_COUNTRY = {
-      // Europe
       'paris':'France','lyon':'France','nice':'France','marseille':'France',
       'berlin':'Germany','munich':'Germany','münchen':'Germany','hamburg':'Germany','frankfurt':'Germany','cologne':'Germany','köln':'Germany',
       'london':'United Kingdom','manchester':'United Kingdom','edinburgh':'United Kingdom',
       'amsterdam':'Netherlands','rotterdam':'Netherlands','the hague':'Netherlands',
       'stockholm':'Sweden','gothenburg':'Sweden','malmö':'Sweden','malmo':'Sweden',
-      'oslo':'Norway','bergen':'Norway',
-      'copenhagen':'Denmark',
-      'helsinki':'Finland',
+      'oslo':'Norway','bergen':'Norway','copenhagen':'Denmark','helsinki':'Finland',
       'madrid':'Spain','barcelona':'Spain','seville':'Spain','valencia':'Spain',
       'rome':'Italy','milan':'Italy','venice':'Italy','florence':'Italy','naples':'Italy',
       'vienna':'Austria','salzburg':'Austria','innsbruck':'Austria',
-      'prague':'Czechia','prag':'Czechia',
-      'budapest':'Hungary','warsaw':'Poland','krakow':'Poland','kraków':'Poland',
-      'lisbon':'Portugal','porto':'Portugal',
-      'athens':'Greece','santorini':'Greece','mykonos':'Greece',
+      'prague':'Czechia','prag':'Czechia','budapest':'Hungary','warsaw':'Poland','krakow':'Poland','kraków':'Poland',
+      'lisbon':'Portugal','porto':'Portugal','athens':'Greece','santorini':'Greece','mykonos':'Greece',
       'dublin':'Ireland','brussels':'Belgium','antwerp':'Belgium',
       'zurich':'Switzerland','geneva':'Switzerland','basel':'Switzerland',
-      'istanbul':'Turkey','ankara':'Turkey',
-      'reykjavik':'Iceland','reykjavík':'Iceland',
-      // Americas
+      'istanbul':'Turkey','ankara':'Turkey','reykjavik':'Iceland','reykjavík':'Iceland',
       'new york':'United States of America','nyc':'United States of America','los angeles':'United States of America','la':'United States of America','san francisco':'United States of America','sf':'United States of America','chicago':'United States of America','boston':'United States of America','miami':'United States of America','seattle':'United States of America','austin':'United States of America','denver':'United States of America','las vegas':'United States of America','vegas':'United States of America',
       'toronto':'Canada','vancouver':'Canada','montreal':'Canada','montréal':'Canada',
       'mexico city':'Mexico','tulum':'Mexico','cancun':'Mexico','cancún':'Mexico',
       'buenos aires':'Argentina','rio':'Brazil','rio de janeiro':'Brazil','sao paulo':'Brazil','são paulo':'Brazil',
       'lima':'Peru','cusco':'Peru',
-      // Asia
       'tokyo':'Japan','kyoto':'Japan','osaka':'Japan',
       'beijing':'China','shanghai':'China','hong kong':'China','hongkong':'China','shenzhen':'China',
       'seoul':'South Korea','busan':'South Korea',
       'bangkok':'Thailand','phuket':'Thailand','chiang mai':'Thailand','krabi':'Thailand',
-      'singapore':'Singapore',
-      'kuala lumpur':'Malaysia',
+      'singapore':'Singapore','kuala lumpur':'Malaysia',
       'jakarta':'Indonesia','bali':'Indonesia','ubud':'Indonesia',
       'manila':'Philippines','cebu':'Philippines',
       'hanoi':'Vietnam','ho chi minh':'Vietnam','saigon':'Vietnam','da nang':'Vietnam',
       'mumbai':'India','delhi':'India','bangalore':'India','goa':'India',
       'dubai':'United Arab Emirates','abu dhabi':'United Arab Emirates',
-      // Africa
       'cairo':'Egypt','cape town':'South Africa','johannesburg':'South Africa',
       'casablanca':'Morocco','marrakech':'Morocco','marrakesh':'Morocco',
-      // Oceania
       'sydney':'Australia','melbourne':'Australia','brisbane':'Australia','perth':'Australia',
       'auckland':'New Zealand','wellington':'New Zealand','queenstown':'New Zealand',
     };
-    // Country aliases (input → topojson name)
     const COUNTRY_ALIASES = {
       'usa':'United States of America','us':'United States of America','america':'United States of America',
       'uk':'United Kingdom','britain':'United Kingdom','england':'United Kingdom','scotland':'United Kingdom','wales':'United Kingdom',
-      'south korea':'South Korea','korea':'South Korea',
-      'czech republic':'Czechia',
+      'south korea':'South Korea','korea':'South Korea','czech republic':'Czechia',
       'uae':'United Arab Emirates','emirates':'United Arab Emirates',
     };
-    // ISO-flag emoji helper (best-effort)
     const COUNTRY_TO_ISO2 = {
-      'France':'FR','Germany':'DE','United Kingdom':'GB','Netherlands':'NL','Sweden':'SE','Norway':'NO',
-      'Denmark':'DK','Finland':'FI','Spain':'ES','Italy':'IT','Austria':'AT','Czechia':'CZ','Hungary':'HU',
-      'Poland':'PL','Portugal':'PT','Greece':'GR','Ireland':'IE','Belgium':'BE','Switzerland':'CH',
-      'Turkey':'TR','Iceland':'IS','United States of America':'US','Canada':'CA','Mexico':'MX',
-      'Brazil':'BR','Argentina':'AR','Peru':'PE','Japan':'JP','China':'CN','South Korea':'KR',
-      'Thailand':'TH','Singapore':'SG','Malaysia':'MY','Indonesia':'ID','Philippines':'PH',
-      'Vietnam':'VN','India':'IN','United Arab Emirates':'AE','Egypt':'EG','South Africa':'ZA',
-      'Morocco':'MA','Australia':'AU','New Zealand':'NZ',
+      'France':'FR','Germany':'DE','United Kingdom':'GB','Netherlands':'NL','Sweden':'SE','Norway':'NO','Denmark':'DK','Finland':'FI','Spain':'ES','Italy':'IT','Austria':'AT','Czechia':'CZ','Hungary':'HU','Poland':'PL','Portugal':'PT','Greece':'GR','Ireland':'IE','Belgium':'BE','Switzerland':'CH','Turkey':'TR','Iceland':'IS','United States of America':'US','Canada':'CA','Mexico':'MX','Brazil':'BR','Argentina':'AR','Peru':'PE','Japan':'JP','China':'CN','South Korea':'KR','Thailand':'TH','Singapore':'SG','Malaysia':'MY','Indonesia':'ID','Philippines':'PH','Vietnam':'VN','India':'IN','United Arab Emirates':'AE','Egypt':'EG','South Africa':'ZA','Morocco':'MA','Australia':'AU','New Zealand':'NZ',
     };
     const isoToFlag = iso => iso ? String.fromCodePoint(...[...iso.toUpperCase()].map(c => 127397 + c.charCodeAt(0))) : '🌍';
 
     // =========================================================================
-    //  TASKS
+    //  TASKS / WEATHER / FULLCALENDAR
     // =========================================================================
     const updateTaskCount = () => {
       const all  = document.querySelectorAll('#task-list input[type="checkbox"]');
@@ -700,16 +556,10 @@
     document.querySelectorAll('#task-list input').forEach(el => el.addEventListener('change', updateTaskCount));
     updateTaskCount();
 
-    // =========================================================================
-    //  WEATHER
-    // =========================================================================
     const forecast = [
-      { day:'TUE', emoji:'⛈️', high:13, low:9  },
-      { day:'WED', emoji:'🌧️', high:14, low:10 },
-      { day:'THU', emoji:'🌧️', high:15, low:11 },
-      { day:'FRI', emoji:'⛅',  high:17, low:11 },
-      { day:'SAT', emoji:'☁️', high:16, low:10 },
-      { day:'SUN', emoji:'🌦️', high:15, low:10 },
+      { day:'TUE', emoji:'⛈️', high:13, low:9  }, { day:'WED', emoji:'🌧️', high:14, low:10 },
+      { day:'THU', emoji:'🌧️', high:15, low:11 }, { day:'FRI', emoji:'⛅',  high:17, low:11 },
+      { day:'SAT', emoji:'☁️', high:16, low:10 }, { day:'SUN', emoji:'🌦️', high:15, low:10 },
       { day:'MON', emoji:'🌧️', high:13, low:9  },
     ];
     const fEl = document.getElementById('forecast');
@@ -720,9 +570,6 @@
       fEl.appendChild(div);
     });
 
-    // =========================================================================
-    //  FULLCALENDAR
-    // =========================================================================
     document.addEventListener('DOMContentLoaded', () => {
       const calendar = new FullCalendar.Calendar(document.getElementById('main-calendar'), {
         initialView: 'dayGridMonth',
@@ -732,19 +579,15 @@
         headerToolbar: { left: 'prev', center: 'title', right: 'next' },
         titleFormat: { year: 'numeric', month: 'short' },
         dayHeaderFormat: { weekday: 'narrow' },
-        fixedWeekCount: false,
-        showNonCurrentDates: true,
-        dayMaxEvents: 1,
-        moreLinkContent: a => `+${a.num}`,
-        eventDisplay: 'block',
-        eventTimeFormat: { hour: 'numeric', minute: '2-digit' },
+        fixedWeekCount: false, showNonCurrentDates: true,
+        dayMaxEvents: 1, moreLinkContent: a => `+${a.num}`,
+        eventDisplay: 'block', eventTimeFormat: { hour: 'numeric', minute: '2-digit' },
       });
       calendar.render();
     });
 
     // =========================================================================
-    //  GANTT + EVENTS-BY-CATEGORY STORE
-    //  All shared-calendar events live here so the map / counter can read them.
+    //  GANTT + shared event store
     // =========================================================================
     document.getElementById('gantt-year').textContent = YEAR;
     const eventsByCategory = { Travel: [], Party: [], Health: [] };
@@ -795,13 +638,7 @@
         end   = new Date(raw.end.dateTime);
         durationDays = (end - start) / DAY_MS;
       }
-      return {
-        id: raw.id,
-        title: raw.summary || 'Untitled',
-        location: raw.location || '',
-        start, end, durationDays,
-        category: category.name, color: category.color,
-      };
+      return { id: raw.id, title: raw.summary || 'Untitled', location: raw.location || '', start, end, durationDays, category: category.name, color: category.color };
     }
 
     function filterAndPrioritize(events) {
@@ -828,17 +665,14 @@
       el.dataset.eventCategory = ev.category || '';
       el.dataset.eventColor    = ev.color || '';
     }
-
     function placeBarForMonth(event, m) {
       const startWeekday = new Date(YEAR, m, 1).getDay();
       const daysInMonth  = new Date(YEAR, m + 1, 0).getDate();
-      const monthStart = new Date(YEAR, m, 1);
-      const monthEnd   = new Date(YEAR, m, daysInMonth);
+      const monthStart = new Date(YEAR, m, 1), monthEnd = new Date(YEAR, m, daysInMonth);
       const barStart = event.start > monthStart ? event.start : monthStart;
       const barEnd   = event.end   < monthEnd   ? event.end   : monthEnd;
       const d1 = barStart.getDate(), d2 = barEnd.getDate();
-      const colStart = 2 + startWeekday + (d1 - 1);
-      const colEnd   = 2 + startWeekday + d2;
+      const colStart = 2 + startWeekday + (d1 - 1), colEnd = 2 + startWeekday + d2;
       const bar = document.createElement('div');
       bar.className = 'gantt-bar';
       bar.style.gridRow = m + 2;
@@ -848,7 +682,6 @@
       tooltipDataset(bar, event);
       document.getElementById('gantt-grid').appendChild(bar);
     }
-
     function renderMultiDay(events) {
       const sorted = [...events].sort((a, b) => b.durationDays - a.durationDays);
       for (const ev of sorted) {
@@ -857,69 +690,48 @@
         for (let m = startMonth; m <= endMonth; m++) placeBarForMonth(ev, m);
       }
     }
-
     async function fetchOneCalendar(cal, timeMin, timeMax) {
-      const url =
-        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cal.id)}/events` +
-        `?key=${GOOGLE_API_KEY}` +
-        `&timeMin=${timeMin}` +
-        `&timeMax=${timeMax}` +
-        `&singleEvents=true&maxResults=2500&orderBy=startTime`;
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cal.id)}/events?key=${GOOGLE_API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true&maxResults=2500&orderBy=startTime`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`${cal.name}: HTTP ${res.status}`);
       const data = await res.json();
       return (data.items || []).map(raw => parseEvent(raw, cal));
     }
-
     async function loadGanttEvents() {
       buildGanttGrid();
       if (GOOGLE_API_KEY.startsWith('YOUR_') || activeShared.length === 0) {
         document.getElementById('gantt-count').textContent = 'add API key + calendars';
-        // Still init right-side panels so they show their "no data" state
         updateLongNight(); updateMapAndCount();
         return;
       }
       try {
-        // For the gantt: limit to YEAR. For map/counter: use a wider window so
-        // we can match "Days since" to past years' party events.
-        const ganttMin = `${YEAR}-01-01T00:00:00Z`;
-        const ganttMax = `${YEAR}-12-31T23:59:59Z`;
-        const wideMin  = `${YEAR - 3}-01-01T00:00:00Z`;
-        const wideMax  = `${YEAR + 1}-12-31T23:59:59Z`;
-
+        const ganttMin = `${YEAR}-01-01T00:00:00Z`, ganttMax = `${YEAR}-12-31T23:59:59Z`;
+        const wideMin  = `${YEAR - 3}-01-01T00:00:00Z`, wideMax  = `${YEAR + 1}-12-31T23:59:59Z`;
         const perCalThisYear = await Promise.all(activeShared.map(c => fetchOneCalendar(c, ganttMin, ganttMax)));
         const parsedThisYear = perCalThisYear.flat();
         const multiDay = filterAndPrioritize(parsedThisYear);
         renderMultiDay(multiDay);
-        document.getElementById('gantt-count').textContent = `${multiDay.length} events · ${activeShared.length} cats`;
-
-        // Wide-window fetch for non-gantt panels (counter + map)
+        document.getElementById('gantt-count').textContent = `${multiDay.length} events`;
         const perCalWide = await Promise.all(activeShared.map(c => fetchOneCalendar(c, wideMin, wideMax)));
-        for (const list of perCalWide) {
-          for (const ev of list) (eventsByCategory[ev.category] ||= []).push(ev);
-        }
+        for (const list of perCalWide) for (const ev of list) (eventsByCategory[ev.category] ||= []).push(ev);
         updateLongNight();
         updateMapAndCount();
       } catch (err) {
-        console.error('Gantt/right-side fetch failed:', err);
+        console.error('Gantt fetch failed:', err);
         document.getElementById('gantt-count').textContent = 'fetch error';
         updateLongNight(); updateMapAndCount();
       }
     }
     loadGanttEvents();
 
-    // =========================================================================
-    //  TOOLTIP
-    // =========================================================================
     (function setupTooltip() {
       const tt = document.getElementById('gantt-tooltip');
       const grid = document.getElementById('gantt-grid');
       grid.addEventListener('mouseover', (e) => {
         const tgt = e.target.closest('[data-event-title]');
         if (!tgt) return;
-        const title = tgt.dataset.eventTitle, start = tgt.dataset.eventStart;
-        const end = tgt.dataset.eventEnd, dur = parseInt(tgt.dataset.eventDuration, 10);
-        const cat = tgt.dataset.eventCategory, col = tgt.dataset.eventColor;
+        const title = tgt.dataset.eventTitle, start = tgt.dataset.eventStart, end = tgt.dataset.eventEnd;
+        const dur = parseInt(tgt.dataset.eventDuration, 10), cat = tgt.dataset.eventCategory, col = tgt.dataset.eventColor;
         const dateLine = (start === end) ? start : `${start} → ${end} · ${dur}d`;
         tt.innerHTML = `<div class="tt-title">${title}</div><div class="tt-date">${dateLine}</div>` + (cat ? `<div class="tt-cat" style="background:${col}">${cat}</div>` : '');
         tt.classList.add('show');
@@ -937,14 +749,10 @@
     })();
 
     // =========================================================================
-    //  AI BAR + MUSIC (unchanged)
+    //  AI BAR + MUSIC
     // =========================================================================
     const aiInput = document.getElementById('ai-input');
-    const aiSubmit = () => {
-      const q = aiInput.value.trim(); if (!q) return;
-      console.log(`[${document.getElementById('ai-model').value}]`, q);
-      aiInput.value = '';
-    };
+    const aiSubmit = () => { const q = aiInput.value.trim(); if (!q) return; console.log(`[${document.getElementById('ai-model').value}]`, q); aiInput.value = ''; };
     document.getElementById('ai-submit').addEventListener('click', aiSubmit);
     aiInput.addEventListener('keydown', e => { if (e.key === 'Enter') aiSubmit(); });
 
@@ -959,9 +767,9 @@
     const playBtnEl = playerEl.querySelector('.mp-play');
     const ICON_PLAY  = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
     const ICON_PAUSE = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
-
     function setPlayingUI(playing) { playerEl.classList.toggle('is-playing', playing); playBtnEl.innerHTML = playing ? ICON_PAUSE : ICON_PLAY; }
     function setTrackUI() { titleEl.textContent = MUSIC_TRACKS[trackIndex].title; progressEl.style.width = '0%'; }
+
     (function loadYouTubeAPI() {
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
@@ -994,15 +802,44 @@
     playerEl.querySelector('[data-action="play"]').addEventListener('click', musicToggle);
     playerEl.querySelector('[data-action="next"]').addEventListener('click', musicNext);
 
+    // ----- Search popover (lives in <body>, positioned via JS) -----
     const popover = document.getElementById('mp-search-popover');
     const searchBtn = playerEl.querySelector('[data-action="search"]');
     const searchIn = document.getElementById('mp-search-input');
     const searchHint = document.getElementById('mp-search-hint');
     const searchRes = document.getElementById('mp-search-results');
-    searchBtn.addEventListener('click', (e) => { e.stopPropagation(); popover.classList.toggle('is-open'); searchBtn.classList.toggle('is-active', popover.classList.contains('is-open')); if (popover.classList.contains('is-open')) setTimeout(() => searchIn.focus(), 50); });
-    document.addEventListener('click', (e) => { if (!popover.contains(e.target) && e.target !== searchBtn) { popover.classList.remove('is-open'); searchBtn.classList.remove('is-active'); } });
-    popover.addEventListener('click', e => e.stopPropagation());
-    function extractVideoId(input) { const t = input.trim(); let m;
+
+    function positionPopover() {
+      const r = playerEl.getBoundingClientRect();
+      // Anchor to the right edge of the music player, above it
+      popover.style.left = Math.max(8, r.right - 360) + 'px';
+      popover.style.top  = (r.top - popover.offsetHeight - 6) + 'px';
+    }
+    function openPopover() {
+      popover.classList.add('is-open');
+      searchBtn.classList.add('is-active');
+      // Position after display:flex so offsetHeight is correct
+      requestAnimationFrame(() => {
+        positionPopover();
+        searchIn.focus();
+      });
+    }
+    function closePopover() {
+      popover.classList.remove('is-open');
+      searchBtn.classList.remove('is-active');
+    }
+    searchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      popover.classList.contains('is-open') ? closePopover() : openPopover();
+    });
+    document.addEventListener('click', (e) => {
+      if (popover.contains(e.target) || searchBtn.contains(e.target)) return;
+      if (popover.classList.contains('is-open')) closePopover();
+    });
+    window.addEventListener('resize', () => { if (popover.classList.contains('is-open')) positionPopover(); });
+
+    function extractVideoId(input) {
+      const t = input.trim(); let m;
       if ((m = t.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/))) return m[1];
       if ((m = t.match(/[?&]v=([a-zA-Z0-9_-]{11})/))) return m[1];
       if ((m = t.match(/embed\/([a-zA-Z0-9_-]{11})/))) return m[1];
@@ -1011,12 +848,25 @@
       return null;
     }
     async function searchYouTube(q) {
-      if (GOOGLE_API_KEY.startsWith('YOUR_')) { searchHint.textContent = 'add a Google API key (with YouTube Data API enabled) to search'; return []; }
+      if (GOOGLE_API_KEY.startsWith('YOUR_')) {
+        searchHint.textContent = 'add your Google API key (with YouTube Data API v3 enabled)';
+        return [];
+      }
       const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=6&q=${encodeURIComponent(q)}&key=${GOOGLE_API_KEY}`;
-      const res = await fetch(url);
-      if (!res.ok) { searchHint.textContent = `search error · HTTP ${res.status} · enable "YouTube Data API v3" on your key`; return []; }
-      const data = await res.json();
-      return (data.items || []).map(i => ({ id: i.id.videoId, title: decodeHTML(i.snippet.title), channel: i.snippet.channelTitle, thumb: i.snippet.thumbnails?.default?.url }));
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const reason = errData.error?.errors?.[0]?.reason || `HTTP ${res.status}`;
+          searchHint.textContent = `search error: ${reason} · check that YouTube Data API v3 is enabled`;
+          return [];
+        }
+        const data = await res.json();
+        return (data.items || []).map(i => ({ id: i.id.videoId, title: decodeHTML(i.snippet.title), channel: i.snippet.channelTitle, thumb: i.snippet.thumbnails?.default?.url }));
+      } catch (err) {
+        searchHint.textContent = `network error: ${err.message}`;
+        return [];
+      }
     }
     function decodeHTML(s) { const el = document.createElement('textarea'); el.innerHTML = s; return el.value; }
     function renderSearchResults(items) {
@@ -1025,15 +875,18 @@
         const row = document.createElement('div');
         row.className = 'mp-result';
         row.innerHTML = `<img src="${it.thumb}" alt=""/><div class="mp-result-meta"><div class="mp-result-title">${it.title}</div><div class="mp-result-channel">${it.channel}</div></div>`;
-        row.addEventListener('click', () => { loadAndPlay(it.id, it.title); popover.classList.remove('is-open'); searchBtn.classList.remove('is-active'); searchIn.value = ''; searchRes.innerHTML = ''; });
+        row.addEventListener('click', () => { loadAndPlay(it.id, it.title); closePopover(); searchIn.value = ''; searchRes.innerHTML = ''; });
         searchRes.appendChild(row);
       }
+      // Reposition after results render (height changes)
+      requestAnimationFrame(positionPopover);
     }
     searchIn.addEventListener('keydown', async (e) => {
+      if (e.key === 'Escape') { closePopover(); return; }
       if (e.key !== 'Enter') return;
       const v = searchIn.value; if (!v.trim()) return;
       const id = extractVideoId(v);
-      if (id) { loadAndPlay(id, v.length > 60 ? id : v); popover.classList.remove('is-open'); searchBtn.classList.remove('is-active'); searchIn.value = ''; searchRes.innerHTML = ''; return; }
+      if (id) { loadAndPlay(id, v.length > 60 ? id : v); closePopover(); searchIn.value = ''; searchRes.innerHTML = ''; return; }
       searchHint.textContent = 'searching…';
       const items = await searchYouTube(v);
       searchHint.textContent = items.length ? `${items.length} result${items.length === 1 ? '' : 's'} · click to play` : 'no results';
@@ -1041,7 +894,7 @@
     });
 
     // =========================================================================
-    //  LONG NIGHT COUNTER — from Party calendar
+    //  LONG NIGHT COUNTER
     // =========================================================================
     function updateLongNight() {
       const sinceEl = document.getElementById('ln-since');
@@ -1049,43 +902,31 @@
       const parties = (eventsByCategory.Party || []).slice().sort((a, b) => a.start - b.start);
       if (!parties.length) { sinceEl.textContent = '—'; untilEl.textContent = '—'; return; }
       const now = new Date();
-      const past   = parties.filter(e => e.end   < now).pop();         // latest past (sorted asc → last one)
-      const future = parties.find  (e => e.start > now);                // first future
+      const past   = parties.filter(e => e.end   < now).pop();
+      const future = parties.find  (e => e.start > now);
       sinceEl.textContent = past   ? Math.floor((now - past.end)   / DAY_MS) : '—';
       untilEl.textContent = future ? Math.ceil ((future.start - now) / DAY_MS) : '—';
     }
 
     // =========================================================================
-    //  WORLD MAP — from Travel calendar
+    //  WORLD MAP
     // =========================================================================
-    const visitedCountries = new Map();   // countryName → [events]
-
+    const visitedCountries = new Map();
     function detectCountry(ev, countryNameSet) {
       const text = `${ev.title} ${ev.location || ''}`.toLowerCase();
-      // 1) Cities
-      for (const [city, country] of Object.entries(CITY_TO_COUNTRY)) {
-        if (text.includes(city)) return country;
-      }
-      // 2) Aliases
+      for (const [city, country] of Object.entries(CITY_TO_COUNTRY)) if (text.includes(city)) return country;
       for (const [alias, country] of Object.entries(COUNTRY_ALIASES)) {
-        // word-boundary-ish check to avoid 'us' matching 'australia'
         const re = new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'i');
         if (re.test(text)) return country;
       }
-      // 3) Exact country names
-      for (const name of countryNameSet) {
-        if (text.includes(name.toLowerCase())) return name;
-      }
+      for (const name of countryNameSet) if (text.includes(name.toLowerCase())) return name;
       return null;
     }
-
     async function renderWorldMap() {
       const container = document.getElementById('world-map');
       const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
       const countries = topojson.feature(world, world.objects.countries);
       const countryNameSet = countries.features.map(f => f.properties.name);
-
-      // Match every Travel event to a country
       visitedCountries.clear();
       for (const ev of (eventsByCategory.Travel || [])) {
         const country = detectCountry(ev, countryNameSet);
@@ -1094,31 +935,20 @@
         visitedCountries.get(country).push(ev);
       }
       document.getElementById('map-count').textContent = `${visitedCountries.size} countries`;
-
-      // Render
       const rect = container.getBoundingClientRect();
-      const W = Math.max(300, rect.width), H = Math.max(150, rect.height);
-      const svg = d3.select(container).html('')
-        .append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('preserveAspectRatio', 'xMidYMid meet');
+      const W = Math.max(260, rect.width), H = Math.max(120, rect.height);
+      const svg = d3.select(container).html('').append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('preserveAspectRatio', 'xMidYMid meet');
       const projection = d3.geoNaturalEarth1().fitSize([W, H], countries);
       const path = d3.geoPath(projection);
-
       svg.selectAll('path').data(countries.features).enter().append('path')
         .attr('d', path)
         .attr('class', d => visitedCountries.has(d.properties.name) ? 'map-country visited' : 'map-country')
-        .on('click', (event, d) => {
-          if (visitedCountries.has(d.properties.name)) showCountryPopup(d.properties.name, event);
-        })
+        .on('click', (event, d) => { if (visitedCountries.has(d.properties.name)) showCountryPopup(d.properties.name, event); })
         .append('title').text(d => d.properties.name + (visitedCountries.has(d.properties.name) ? ` · ${visitedCountries.get(d.properties.name).length} trip(s)` : ''));
     }
-
     function updateMapAndCount() {
-      renderWorldMap().catch(err => {
-        console.error('Map render failed:', err);
-        document.getElementById('map-count').textContent = 'map error';
-      });
+      renderWorldMap().catch(err => { console.error('Map render failed:', err); document.getElementById('map-count').textContent = 'map error'; });
     }
-
     function showCountryPopup(country, evt) {
       document.querySelectorAll('.country-popup').forEach(p => p.remove());
       const trips = visitedCountries.get(country) || [];
@@ -1130,20 +960,17 @@
           <span class="popup-flag">${flag}</span>
           <span class="popup-title">${country}</span>
           <span class="popup-count">${trips.length} trip${trips.length === 1 ? '' : 's'}</span>
-          <button class="popup-close" aria-label="Close">×</button>
+          <button class="popup-close">×</button>
         </div>
         <div class="popup-list">
           ${trips.sort((a,b) => b.start - a.start).map(t => `
             <div class="popup-trip">
               <div class="popup-trip-title">${t.title}</div>
               <div class="popup-trip-date">${fmtDate(t.start)} → ${fmtDate(t.end)} · ${Math.max(1, Math.round(t.durationDays))}d</div>
-            </div>
-          `).join('')}
+            </div>`).join('')}
         </div>`;
       document.body.appendChild(popup);
-      // Position near click, flip if overflowing
-      const x = evt.clientX, y = evt.clientY;
-      const r = popup.getBoundingClientRect();
+      const x = evt.clientX, y = evt.clientY, r = popup.getBoundingClientRect();
       popup.style.left = Math.min(x + 10, window.innerWidth  - r.width  - 12) + 'px';
       popup.style.top  = Math.min(y + 10, window.innerHeight - r.height - 12) + 'px';
       popup.querySelector('.popup-close').onclick = () => popup.remove();
@@ -1157,21 +984,11 @@
     }
 
     // =========================================================================
-    //  HEALTH DASHBOARD — pulls from your PROC_Daily sheet
+    //  HEALTH PIPELINE
     // =========================================================================
-    async function fetchSheet(sheetId, range) {
-      if (sheetId.startsWith('YOUR_') || GOOGLE_API_KEY.startsWith('YOUR_')) return null;
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}?key=${GOOGLE_API_KEY}`;
-      const res = await fetch(url);
-      if (!res.ok) { console.error('Sheet fetch:', res.status); return null; }
-      const data = await res.json();
-      return data.values || [];
-    }
-
     async function loadHealth() {
-      if (HEALTH_SHEET_ID.startsWith('YOUR_')) return; // keep placeholder values
+      if (HEALTH_SHEET_ID.startsWith('YOUR_')) return;
       try {
-        // Pull every mapped cell in a single batchGet for efficiency
         const ranges = Object.values(HEALTH_CELL_MAP).map(r => `ranges=${encodeURIComponent(r)}`).join('&');
         const url = `https://sheets.googleapis.com/v4/spreadsheets/${HEALTH_SHEET_ID}/values:batchGet?${ranges}&key=${GOOGLE_API_KEY}`;
         const res = await fetch(url);
@@ -1180,33 +997,28 @@
         const keys = Object.keys(HEALTH_CELL_MAP);
         const valueByKey = {};
         data.valueRanges.forEach((vr, i) => { valueByKey[keys[i]] = vr.values || []; });
-
         const setText = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.textContent = v; };
         const first = arr => arr?.[0]?.[0];
-        setText('h-today-cal-in',   first(valueByKey.todayCalIn));
-        setText('h-today-cal-out',  first(valueByKey.todayCalOut));
-        setText('h-month-cal-in',   first(valueByKey.monthCalIn));
-        setText('h-month-cal-out',  first(valueByKey.monthCalOut));
-        setText('h-target-cal-in',  first(valueByKey.targetCalIn));
-        setText('h-target-cal-out', first(valueByKey.targetCalOut));
+        setText('h-today-cal-in',  first(valueByKey.todayCalIn));
+        setText('h-today-cal-out', first(valueByKey.todayCalOut));
+        setText('h-month-cal-in',  first(valueByKey.monthCalIn));
+        setText('h-month-cal-out', first(valueByKey.monthCalOut));
+        setText('h-target-cal-in', first(valueByKey.targetCalIn));
+        setText('h-target-cal-out',first(valueByKey.targetCalOut));
         setText('h-weight',  first(valueByKey.weight));
         setText('h-bodyfat', first(valueByKey.bodyfat));
-        setText('h-fiber',   first(valueByKey.fiber)  != null ? first(valueByKey.fiber)  + 'g' : null);
-        setText('h-sugar',   first(valueByKey.sugar)  != null ? first(valueByKey.sugar)  + 'g' : null);
-
-        // Weight line chart
+        setText('h-fiber',   first(valueByKey.fiber) != null ? first(valueByKey.fiber) + 'g' : null);
+        setText('h-sugar',   first(valueByKey.sugar) != null ? first(valueByKey.sugar) + 'g' : null);
         if (valueByKey.weightSeries?.length) {
           const series = valueByKey.weightSeries.map(r => parseFloat(r[0])).filter(n => !isNaN(n));
           if (series.length > 1) {
             const min = Math.min(...series), max = Math.max(...series), pad = (max - min) * 0.1 || 1;
-            const y = v => 50 - ((v - (min - pad)) / ((max + pad) - (min - pad))) * 50;
+            const y = v => 36 - ((v - (min - pad)) / ((max + pad) - (min - pad))) * 36;
             const pts = series.map((v, i) => `${(i / (series.length - 1)) * 200},${y(v)}`).join(' ');
             document.getElementById('weight-line').setAttribute('points', pts);
           }
         }
-      } catch (err) {
-        console.error('Health sheet load failed:', err);
-      }
+      } catch (err) { console.error('Health sheet load failed:', err); }
     }
     loadHealth();
   </script>
